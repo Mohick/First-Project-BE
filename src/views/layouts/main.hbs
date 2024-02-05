@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: '#da373d',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <container class=" container m-auto block">
+        <header class=" flex  bg-zinc-900">
+            <div class="block">
+                <h1>
+                    <a href="/" class="my-1 p-1.5 block capitalize text-purple-50  no-underline" title="Back Home Page">
+                        API Best Music </a>
+                </h1>
+            </div>
+            <div>
+                <ul class="flex">
+                    <li><a class="m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200  block no-underline"
+                            href="/">home</a></li>
+                    <li><a class="m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline"
+                            href="/create/">Create</a></li>
+                    <li><a class="m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline"
+                            href="/dustbin/">Dustbin</a></li>
+                </ul>
+            </div>
+            <div class=" flex-1">
+                <div class=" flex justify-end ">
+                    <a href="/Login"
+                        class="items-end text-end m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline">Login</a>
+                </div>
+            </div>
+        </header>
+        <div id="Root">
+            {{{body}}}
+        </div>
+    </container>
+</body>
+
+</html>
