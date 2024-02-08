@@ -5,6 +5,10 @@ const app = express();
 const connectDB = require('./src/Connect MongoseDB/ConnectDB')
 // port server
 const port = 3000
+
+// get value of json property
+app.use(express.urlencoded({ extended: true}))
+app.use(express.json())
 // use morgan 
 var morgan = require('morgan')
 app.use(morgan('combined'))
@@ -17,7 +21,7 @@ app.set('views', './src/views');
 
 // use static files
 const path = require('path');
-app.use(express.static(path.join(__dirname, '/static')));
+app.use(express.static(path.join(__dirname, '/public')));
  // Run Connect MongoDB
 connectDB()
 // take and controll routes

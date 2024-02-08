@@ -11,12 +11,12 @@ const Account = new Schema(
       match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
     password: { type: String, match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/ },
-    playList: {default:Array},
-    liked:  {default:Array},
+    playList: {type:Array,default:Array},
+    liked: {type:Array,default:Array},
   },
   {
     timestamps: true,
   }
 );
-
-module.exports = new Account
+const ModelAccount =mongoose.model('Account',Account);
+module.exports =   ModelAccount

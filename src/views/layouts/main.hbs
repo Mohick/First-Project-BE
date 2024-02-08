@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading...</title>
+    <link rel="stylesheet" href="/taiwincss/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -22,33 +23,111 @@
 <body>
     <container class=" container m-auto block">
         <header class=" flex  bg-zinc-900">
-            <div class="block">
+            <div class="block order-2 flex-1 md:order-1">
                 <h1>
-                    <a href="/" class="my-1 p-1.5 block capitalize text-purple-50  no-underline" title="Back Home Page">
-                        API Best Music </a>
+                    <a href="/" class="my-1 text-center md:text-start p-1.5 block capitalize text-purple-50  no-underline
+                    
+                    " title="Back Home Page">
+                        API Best Music
+                    </a>
                 </h1>
             </div>
-            <div>
-                <ul class="flex">
-                    <li><a class="m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200  block no-underline"
-                            href="/">home</a></li>
-                    <li><a class="m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline"
-                            href="/create/">Create</a></li>
-                    <li><a class="m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline"
-                            href="/dustbin/">Dustbin</a></li>
-                </ul>
-            </div>
-            <div class=" flex-1">
-                <div class=" flex justify-end ">
+
+            <div class="  flex-1 order-3 md:order-3">
+                <div class=" flex hidden md:block justify-end ">
                     <a href="/Login"
                         class="items-end text-end m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline">Login</a>
                 </div>
             </div>
+            <div class=" flex-1 md:hidden order-1">
+                <div class="flex block justify-start items-center  h-full p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="menu w-5 block fill-slate-50" viewBox="0 0 448 512">
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 
+                            256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 
+                            17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+                    </svg>
+                </div>
+            </div>
         </header>
+        {{!-- modal --}}
+        <div class="hidden fixed top-0 left-0 right-0 bottom-0 bg-black/[.2] modal-login  h-screen  ">
+            <div class="container form_modal m-auto h-full bg-white">
+
+                {{#if true}}
+                <div class=" flex justify-between flex-col h-full">
+                    <div class="overflow-x-scroll  ">
+                        <ul>
+                            <li><a class="capitalize block text-center border-l-zinc-950 border-b"
+                                    href="/profile">Profile</a></li>
+                            <li>
+                                <a class="capitalize block text-center border-l-zinc-950 border-b" href="/setting">
+                                    Setting
+                                </a>
+                            </li>
+                            <li>
+                                <a class="capitalize block text-center border-l-zinc-950 border-b"
+                                    href="/grant permissions">Grant permissions</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class=" flex justify-end flex-col">
+                        <div class="m-1">
+                            <a href="/logout" class="capitalize block text-center border-l-zinc-950 border-b">Logout</a>
+                        </div>
+                        <div class="m-1">
+                            <a class="capitalize block text-center bg-rose-600 border-l-zinc-950 border-b">Close</a>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
         <div id="Root">
             {{{body}}}
         </div>
+        <footer class="w-full p-1 grid grid-cols-1 gap-3 text-stone-50 bg-zinc-900">
+            <div class="w-full  border-double border-l-neutral-50 border">
+                <div class="text-center" >
+                    Profiles
+                </div>
+                <div class="p-1">
+                    <div>
+                        FullName : <span>Du Bao Nhan</span>
+                    </div>
+                     <div>
+                        Year of birth: <span>2004</span>
+                    </div>
+                    <div>
+                        Email : <span>haokietks7@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            <div>llll</div>
+            <div>lllll</div>
+        </footer>
     </container>
+    <script>
+        const headerHeight = document.querySelector('header').clientHeight;
+        const menu = document.querySelector('.menu')
+        function controllModal() {
+            const modal = document.querySelector(".modal-login")
+            const form_modal = document.querySelector('.form_modal')
+            if (modal.classList.contains('hidden')) {
+                form_modal.style.marginTop = headerHeight + "px";
+                modal.classList.remove('hidden')
+                modal.classList.add('block')
+            }
+            else {
+                modal.classList.remove('block')
+                modal.classList.add('hidden')
+
+            }
+        }
+        menu.addEventListener('click', controllModal)
+
+        document.querySelector('title').innerHTML = 'Home'
+    </script>
 </body>
 
 </html>
