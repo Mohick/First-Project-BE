@@ -21,11 +21,12 @@
 </head>
 
 <body>
-    <container class=" container m-auto block">
-        <header class=" flex  bg-zinc-900">
+    <container>
+        {{!-- header --}}
+        <header class=" container m-auto w-full top-0 flex  bg-zinc-900">
             <div class="block order-2 flex-1 md:order-1">
                 <h1>
-                    <a href="/" class="my-1 text-center md:text-start p-1.5 block capitalize text-purple-50  no-underline
+                    <a href="/" class="my-1 text-center md:text-start p-1.5 inline-block capitalize text-purple-50  no-underline
                     
                     " title="Back Home Page">
                         API Best Music
@@ -34,9 +35,14 @@
             </div>
 
             <div class="  flex-1 order-3 md:order-3">
-                <div class=" flex hidden md:block justify-end ">
-                    <a href="/Login"
-                        class="items-end text-end m-1 p-1.5 capitalize text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 block no-underline">Login</a>
+                <div class="  hidden  md:block justify-end ">
+                    <div class="flex justify-end">
+                        <a href="/login" class="items-end text-end m-1 p-1.5 capitalize
+                         text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 inline-block no-underline
+                         
+                         ">Login</a>
+                    </div>
+
                 </div>
             </div>
             <div class=" flex-1 md:hidden order-1">
@@ -51,12 +57,10 @@
             </div>
         </header>
         {{!-- modal --}}
-        <div class="hidden fixed top-0 left-0 right-0 bottom-0 bg-black/[.2] modal-login  h-screen  ">
+        <div class="close-modal-menu hidden fixed top-0 left-0 right-0 bottom-0 bg-black/[.2] modal-login  h-screen  ">
             <div class="container form_modal m-auto h-full bg-white">
-
-                {{#if true}}
-                <div class=" flex justify-between flex-col h-full">
-                    <div class="overflow-x-scroll  ">
+                <div class="  flex h-4/5 flex-col">
+                    <div class="overflow-y-auto  flex-1  ">
                         <ul>
                             <li><a class="capitalize block text-center border-l-zinc-950 border-b"
                                     href="/profile">Profile</a></li>
@@ -72,60 +76,166 @@
                         </ul>
                     </div>
                     <div class=" flex justify-end flex-col">
+                        {{#if false}}
+
                         <div class="m-1">
-                            <a href="/logout" class="capitalize block text-center border-l-zinc-950 border-b">Logout</a>
+                            <a href="/logout"
+                                class="capitalize bg-amber-300 block text-center border-l-zinc-950 border-b">Logout</a>
                         </div>
                         <div class="m-1">
-                            <a class="capitalize block text-center bg-rose-600 border-l-zinc-950 border-b">Close</a>
+                            <div
+                                class="close-modal-menu capitalize  text-center bg-rose-600 border-l-zinc-950 border-b">
+                                Close</div>
                         </div>
+                        {{else}}
+                        <div class="m-1">
+                            <a href="/login"
+                                class="capitalize block text-center bg-green-400 border-l-zinc-950 border-b">Login</a>
+                        </div>
+                        {{/if}}
                     </div>
                 </div>
-                {{/if}}
+
             </div>
         </div>
-        <div id="Root">
+        {{!-- content --}}
+        <div id="Root" class="container m-auto">
             {{{body}}}
         </div>
-        <footer class="w-full p-1 grid grid-cols-1 gap-3 text-stone-50 bg-zinc-900">
-            <div class="w-full  border-double border-l-neutral-50 border">
-                <div class="text-center" >
-                    Profiles
+        {{!-- footer --}}
+        <footer
+            class="w-full container m-auto p-1 pt-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 text-stone-50 bg-zinc-900">
+            <div class=" capitalize w-full  ">
+                <div class="text-center border border-white">
+                    Profile Project
                 </div>
                 <div class="p-1">
-                    <div>
+                    <div class="py-1">Member : <span>1</span></div>
+                    <div class="py-1">
                         FullName : <span>Du Bao Nhan</span>
                     </div>
-                     <div>
-                        Year of birth: <span>2004</span>
+                    <div class="py-1">
+                        Year of : <span>2004</span>
                     </div>
-                    <div>
-                        Email : <span>haokietks7@gmail.com</span>
+                    <div class="py-1">
+                        Email : <span class="lowercase">haokietks7@gmail.com</span>
                     </div>
                 </div>
             </div>
-            <div>llll</div>
-            <div>lllll</div>
+            <div class="w-full   capitalize ">
+                <div class="text-center border border-white ">
+                    feature project
+                </div>
+                <div class="p-1">
+                    <div class="py-1">
+                        C : <span>create data about user and data about discover ! </span>
+                    </div >
+                    <div class="py-1">
+                        R : <span>Read Data with format JSON And get data of Account with session-cookies !</span>
+                    </div>
+                    <div class="py-1">
+                        U : <span>Update DataBase of Account and Discover !</span>
+                    </div>
+                    <div class="py-1">
+                        D : <span> Soft-Delete Put Data in trash and
+                            Delete Actuall Data in Trash and can't restore !</span>
+                    </div>
+                    <div class="py-1">
+                        Restore : <span> Restore data in trash !</span>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full  flex flex-col  capitalize ">
+                <div class="text-center border border-white ">
+                    Contact
+                </div>
+                <div>
+
+                    <div class="p-1 py-1 inline-block">
+                        <a href="https://www.facebook.com/profile.php?id=100037548151586" class="block flex gap-1"
+                            target="_blank" rel="noopener noreferrer">
+                            <div><svg class='w-5 fill-slate-50 ' xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 
+                                    504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 
+                                    6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 
+                                    494.8 512 386.9 512 256h0z" />
+                                </svg></div>
+                            <div>facebook</div>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="p-1 inline-block">
+                        <a href="https://www.linkedin.com/in/du-nhan-33b4bb279/" class="block flex gap-1"
+                            target="_blank" rel="noopener noreferrer">
+                            <div><svg xmlns="http://www.w3.org/2000/svg" class='w-5 fill-slate-50 '
+                                    viewBox="0 0 448 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path
+                                        d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 
+                            32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 
+                            96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 
+                            54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" />
+                                </svg>
+                            </div>
+                            <div>linkedIn</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </footer>
     </container>
     <script>
         const headerHeight = document.querySelector('header').clientHeight;
+        const content = document.getElementById('Root')
         const menu = document.querySelector('.menu')
+        const closes = document.querySelectorAll('.close-modal-menu')
+        const form_modal = document.querySelector('.form_modal')
+        const footer = document.querySelector('footer')
         function controllModal() {
             const modal = document.querySelector(".modal-login")
-            const form_modal = document.querySelector('.form_modal')
             if (modal.classList.contains('hidden')) {
                 form_modal.style.marginTop = headerHeight + "px";
                 modal.classList.remove('hidden')
                 modal.classList.add('block')
+                window.addEventListener('scroll', disableScroll)
+                form_modal.addEventListener('click', stopHandle)
             }
             else {
                 modal.classList.remove('block')
                 modal.classList.add('hidden')
+                window.onscroll = () => true;
+                window.removeEventListener('scroll', disableScroll)
 
             }
         }
+
+        function stopHandle(e) {
+            e.stopPropagation();
+        }
+
+        function disableScroll() {
+            window.scrollTo(0, 0)
+        }
         menu.addEventListener('click', controllModal)
 
+        closes.forEach((modal) => {
+            modal.addEventListener('click', controllModal)
+        })
+        window.onresize = function (e) {
+            if (footer.clientHeight + headerHeight + content.clientHeight < window.innerHeight) {
+                footer.style.cssText = 'position:fixed;bottom:0;left:0;right:0;'
+            } else {
+                footer.style.cssText = 'position:relative;bottom:0;left:0;right:0;'
+            }
+        }
+        if (footer.clientHeight + headerHeight + content.clientHeight < window.innerHeight) {
+            footer.style.cssText = 'position:fixed;bottom:0;left:0;right:0;'
+        } else {
+            footer.style.cssText = 'position:relative;bottom:0;left:0;right:0;'
+        }
         document.querySelector('title').innerHTML = 'Home'
     </script>
 </body>

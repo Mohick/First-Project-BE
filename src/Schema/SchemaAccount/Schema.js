@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
-
-const Account = new Schema(
+var mongoose_delete = require("mongoose-delete");
+const AccountSchema = new Schema(
   {
     id: ObjectId,
     username: String,
@@ -10,13 +10,21 @@ const Account = new Schema(
       type: String,
       match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
-    password: { type: String, match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/ },
-    playList: {type:Array,default:Array},
-    liked: {type:Array,default:Array},
+    password: String,
+    playList: {
+      type: Array,
+      default: [],
+    },
+    liked: {
+      type: Array,
+      default: [],
+    },
   },
   {
     timestamps: true,
   }
 );
-const ModelAccount =mongoose.model('Account',Account);
-module.exports =   ModelAccount
+AccountSchema.plugin(mongoose_delete, { overrideMethods: true });
+const AccountModel = mongoose.model("Account", AccountSchema);
+
+module.exports = AccountModel;

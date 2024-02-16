@@ -1,0 +1,127 @@
+<div class="my-3 font-bold border-4 border-double border-black">
+    <div class="p-1">
+        <div>
+            <div class="border-x-1 flex gap-2 inline-block ">
+                <a href="/account/" class="inline-block self-center	">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-black w-4" viewBox="0 0 320 512">
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 
+                160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5
+                 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </a>
+                <h2 class="p-2 block ">
+                    Views Data
+                </h2>
+            </div>
+            <div>
+                <div class="mt-3 p-1 border  border-solid focus-within:p-5 md:focus-within:p-1 border-black">
+                    <input type="search" placeholder="Search Email User"
+                        class="w-full  p-1 focus:fixed md:focus:relative top-0 left-0">
+                </div>
+                <div class="flex mt-1 gap-2 justify-between">
+                    <div class="">
+                        <div class="flex border border-black p-1  justify-center flex-col">
+                            <label for="" class="font-normal">Check ALL</label>
+                            <input type="checkbox" id="trush_btn_checkAll--item" class=" block ">
+                        </div>
+                    </div>
+                    <div class="flex  gap-2 ">
+                        <select id="trush_select-method" class="outline-none border border-black block">
+                            <option value="Choose Method">Choose Method</option>
+                            <option value="Restore">Restore</option>
+                            <option value="Delete">Delete</option>
+                        </select>
+                        <div class="items-center border block border-black">
+                            <input class="p-1 h-full opacity-40" id="trush_btn_submit" type="submit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" mt-2 border block border-solid capitalize border-black overflow-y-auto   max-h-96 p-2">
+            <div class="container__items-data  flex flex-col gap-2 ">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const btnCheckAll = document.querySelector('#trush_btn_checkAll--item');
+    const btnSubmit = document.querySelector('#trush_btn_submit');
+    const btnItems = document.querySelectorAll('.trush_btn--items');
+    const tagSlection = document.querySelector('#trush_select-method')
+    btnCheckAll.addEventListener('click', (e) => {
+        btnItems.forEach(items => items.checked = e.target.checked);
+        openSubmit(false)
+    })
+    btnItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const haveBeenCheck = document.querySelectorAll('.trush_btn--items:checked');
+            btnCheckAll.checked = haveBeenCheck.length == btnItems.length;
+            openSubmit(false)
+
+        })
+    })
+
+    btnSubmit.addEventListener('click', (e) => {
+        openSubmit()
+    })
+
+    tagSlection.addEventListener('change', (e) => {
+        openSubmit(false)
+
+    })
+    function openSubmit(onlyClickAtButtonSubmit = true) {
+        const haveBeenCheck = document.querySelectorAll('.trush_btn--items:checked');
+        switch (!!tagSlection.value.toLocaleLowerCase()) {
+            case haveBeenCheck.length == 0:
+                btnSubmit.classList.add('opacity-40')
+                btnSubmit.classList.remove('opacity-100')
+                onlyClickAtButtonSubmit ? alert("Please choose minimum a item") : undefined
+                return false;
+                break;
+            case tagSlection.value.toLocaleLowerCase() == 'Delete'.toLocaleLowerCase()
+                || tagSlection.value.toLocaleLowerCase() == 'Restore'.toLocaleLowerCase()
+                && haveBeenCheck.length > 0:
+                btnSubmit.classList.remove('opacity-40')
+                btnSubmit.classList.add('opacity-100')
+                return true
+                break;
+            case tagSlection.value.toLocaleLowerCase() == 'Choose Method'.toLocaleLowerCase():
+                onlyClickAtButtonSubmit ? alert("Please choose a method !") : undefined
+                btnSubmit.classList.add('opacity-40')
+                btnSubmit.classList.remove('opacity-100')
+                return false;
+                break;
+
+        }
+    }
+
+    const data= {{{{resultData}}}}
+    function renderData(data = []) {
+
+        return data.reduce((valueBegin, render) => {
+            return valueBegin + ` <div class="flex border border-black p-1">
+                    <div class="flex gap-2 truncate">
+                        <div class="flex">
+                            <input name="method[]" class="trush_btn--items" type="checkbox">
+                        </div>
+                        <div class="truncate">
+                            <div class="truncate">UserName : badboi</div>
+                            <div class="truncate">Email : badboi@gmail.com</div>
+                            <div class="truncate">Delete : 2024-02-14T20:37:02.152+00:00</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end items-center gap-2 flex-1 ">
+
+                        <div class="bg-red-400 p-1">Destroy</div>
+                        <div class="bg-green-400 p-1">Restore</div>
+
+                    </div>
+                </div>`
+        }, '')
+    }
+</script>

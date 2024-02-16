@@ -1,0 +1,104 @@
+<div class="my-3 font-bold border-4 border-double border-black">
+    <div class="p-1">
+        <div>
+
+            <div class="border-x-1 flex gap-2 inline-block ">
+                <a href="/account/" class="inline-block self-center	">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-black w-4" viewBox="0 0 320 512">
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 
+                160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5
+                 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </a>
+                <h2 class="p-2 block ">
+                    Views Data
+                </h2>
+            </div>
+            <div class="mt-3 p-1 border  border-solid focus-within:p-5 md:focus-within:p-1 border-black">
+                <input type="search" placeholder="Search User"
+                    class="w-full  p-1 focus:fixed md:focus:relative top-0 left-0">
+            </div>
+
+        </div>
+        <div class=" mt-2 border block border-solid capitalize border-black overflow-y-auto   max-h-96 p-2">
+            <div
+                class="container__items-data grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 border  xl:grid-cols-4 2xl:grid-cols-6">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const boxItemsData = document.querySelector('.container__items-data')
+    const inputSearchData = document.querySelector('input[type="search"]')
+    const resultData = {{{ resultData }}}
+    function renderItems(data) {
+        const content = data.reduce((begin, value, index) => {
+            return begin + ` <div class=" p-1 border border-solid border-black w-full overflow-hidden ">
+                    <div class="p-1 border border-solid border-black">
+                        <div class="  truncate ">
+                            id :
+                            <span>
+                                ${value._id}
+                            </span>
+                        </div>
+                        <div class="  truncate ">
+                            username :
+                            <span>
+                                ${value.username}
+                            </span>
+                        </div>
+                        <div class="  truncate ">
+                            email :
+                            <span>
+                                 ${value.email}
+                            </span>
+                        </div>
+                        <div class="  truncate ">
+                            password :
+                            <span>
+                               ${value.password}
+                            </span>
+                        </div>
+
+                        <div class="  truncate ">
+                            playList :
+                            <span>
+                                ${JSON.stringify(value.playList)}
+                            </span>
+                        </div>
+                        <div class="  truncate ">
+                            liked :
+                            <span>
+                                ${JSON.stringify(value.liked)}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex mt-2 justify-between mb-1">
+                        <a href="edit/${value._id}" class="block p-2 bg-green-500 ">update</a>
+                        <a href="delete/${value._id}" class="block p-2 bg-red-400 ">delete</a>
+                    </div>
+                </div>`
+        }, '')
+        return content
+    }
+    boxItemsData.innerHTML = renderItems(resultData)
+    inputSearchData.onchange = function (tag) {
+        const value = tag.target.value.trim();
+        const findData = resultData.filter((dataEmail) => {
+            const convertString = '' + dataEmail.email.trim()
+            return convertString.toLowerCase().startsWith(value.toLowerCase())
+        })
+        if (value.length > 0) {
+            console.log(findData)
+            return boxItemsData.innerHTML = renderItems(findData)
+
+        } else {
+            console.log(resultData)
+            return boxItemsData.innerHTML = renderItems(resultData)
+        }
+    }
+</script>
