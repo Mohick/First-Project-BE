@@ -3,10 +3,12 @@ const DataUser = require("../../../Schema/SchemaAccount/Schema");
 class viewsTrash {
   async views(req, res, next) {
     try {
-      await DataUser.findDeleted({}).then((resultData) => {
+      await DataUser.findDeleted()
+      .then((resultData) => {
         resultData = resultData.map((data) => {
           return data.toObject();
         });
+        
         res.render("./Account/views mode/views trash", {
           resultData: JSON.stringify(resultData),
         });

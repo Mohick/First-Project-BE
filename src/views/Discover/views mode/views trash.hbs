@@ -1,0 +1,466 @@
+<div class="my-3 font-bold border-4 border-double border-black">
+    <div class="p-1">
+        <div>
+            <div class="border-x-1 flex gap-2 inline-block ">
+                <a href="/discover/" class="inline-block self-center	">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-black w-4" viewBox="0 0 320 512">
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 
+                160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5
+                 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </a>
+                <h2 class="p-2 block ">
+                    Views Trash
+                </h2>
+            </div>
+            <div>
+                <div class="mt-3 p-1 border flex  border-solid focus-within:justify-end  border-black">
+                    <input type="search" id="trash_input-search-items" placeholder="Search Email User"
+                        class="w-full outline-none  p-1 focus:fixed md:focus:relative top-0 left-0">
+                    <input type="button" id="trash_button-search-items"
+                        class="flex justify-end p-1 bg-green-400 cursor-pointer rounded-sm" value="Find">
+                </div>
+                <div class="flex mt-1 gap-2 justify-between">
+                    <div class="">
+                        <div class="flex border  border-black p-1  justify-center flex-col">
+                            <div>
+                                <label for="trash_btn_checkAll--item" class="cursor-pointer font-normal">Check
+                                    ALL</label>
+                            </div>
+                            <div class="flex justify-center">
+                                <input type="checkbox" id="trash_btn_checkAll--item" class="cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex  gap-2 ">
+                        <select id="trash_select-method" class="outline-none border border-black block">
+                            <option value="Choose Method">Choose Method</option>
+                            <option value="Restore">Restore</option>
+                            <option value="Delete">Delete</option>
+                        </select>
+                        <div class="items-center border block border-black">
+
+                            <input class="p-1 h-full opacity-40" id="trash_btn_submit" type="submit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" mt-2 border block border-solid capitalize border-black overflow-y-auto   max-h-96 p-2">
+            <div class="trush__container__items-data  flex flex-col gap-2 ">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div
+    class="fixed trash_form_modal-container hidden  z-10  justify-center items-center top-0 left-0 right-0 bottom-0 bg-black/50">
+    <form
+        class="trash_modal_box-form  inline-block container border p-2 border-black  font-bold bg-white overflow-y-auto   max-h-96"
+        action="" method="post">
+        <div class="trash_form_title text-xl text-center mb-2">You Want Restore items !</div>
+        <div class="trash_box_content truncate border p-2 border-black flex flex-col gap-2">
+
+        </div>
+        <div class="flex justify-end gap-2 mt-2">
+            <div class="trash_btn_form-cannel bg-gray-500 p-1">Cannel</div>
+            <div>
+                <input class="trash_btn_form-submit-single bg-green-500 p-1" type="submit" />
+                <input class="trash_btn_form-submit-multiple bg-green-500 p-1" type="submit" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    const boxContainerContent = document.querySelector('.trush__container__items-data')
+    const data = {{{ resultData }}}
+    function renderItems(data = []) {
+        return data.reduce((valueBegin, value) => {
+            return valueBegin + ` <div class="flex border border-black p-1">
+                    <div class="flex gap-2 truncate">
+                        <div class="flex">
+                            <input name="id" class="trash_btn--items" value="${value._id}" type="checkbox">
+                        </div>
+                        <div class="trash_profile-items truncate">
+                            <div class="truncate">Id : ${value._id}</div>
+                            <div class="truncate">title Musical : ${value.titleMusical}</div>
+                            <div class="truncate">deleteAt :  ${value.updatedAt}</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end items-center gap-2 flex-1 ">
+
+                        <button class="trash__btn_destroy bg-red-400 p-1">Destroy</button>
+                        <button  class="trash__btn_restore bg-green-400 p-1">Restore</button>
+
+                    </div>
+                </div>`
+        }, '')
+    }
+    if (data.length > 0) {
+        boxContainerContent.innerHTML = renderItems(data)
+    } else {
+        boxContainerContent.innerHTML = " You do not have Items to display !"
+        boxContainerContent.classList.add("text-center")
+        boxContainerContent.classList.add("block")
+        boxContainerContent.classList.remove("grid")
+    }
+    const btnCheckAll = document.querySelector('#trash_btn_checkAll--item');
+    const btnSubmit = document.querySelector('#trash_btn_submit');
+    const btnItems = document.querySelectorAll('.trash_btn--items');
+    const tagSlection = document.querySelector('#trash_select-method')
+    const inputSearchData = document.querySelector('#trash_input-search-items')
+    const btsSearchData = document.querySelector('#trash_button-search-items')
+
+    const modalContainer = document.querySelector('.trash_form_modal-container')
+    const formModal = document.querySelector('.trash_modal_box-form')
+    const modelFormTitle = document.querySelector('.trash_form_title')
+    const btnsRestore = document.querySelectorAll('.trash__btn_restore')
+    const btnsDestroy = document.querySelectorAll('.trash__btn_destroy')
+    const btnFormCannel = document.querySelector('.trash_btn_form-cannel')
+    const btnFormSubmitMultiple = document.querySelector('.trash_btn_form-submit-multiple')
+    const btnFormSubmitSing = document.querySelector('.trash_btn_form-submit-single')
+
+    function handleSearch(items) {
+        const value = inputSearchData.value.trim();
+
+        const findData = data.filter((dataTitle) => {
+            const convertString = '' + dataTitle.titleMusical.trim()
+            return convertString.toLowerCase().startsWith(value.toLowerCase())
+        })
+        if (value.length > 0) {
+
+            boxContainerContent.innerHTML = renderItems(findData)
+            boxContainerContent.classList.remove("text-center")
+            boxContainerContent.classList.remove("block")
+            boxContainerContent.classList.add("grid")
+            const btnsRestore = document.querySelectorAll('.trash__btn_restore')
+            const btnsDestroy = document.querySelectorAll('.trash__btn_destroy')
+            btnsRestore.forEach(items => {
+                items.addEventListener('click', function (e) {
+                    let tagParent = e.target.parentElement.parentElement
+                    const getID = tagParent.querySelector('.trash_btn--items').value
+                    let profileItems = tagParent.querySelector('.trash_profile-items')
+                    btnFormSubmitMultiple.classList.add('hidden')
+                    btnFormSubmitMultiple.classList.remove('block')
+                    btnFormSubmitSing.classList.remove('hidden')
+                    btnFormSubmitSing.classList.add('block')
+
+                    const tagDivItems = profileItems.querySelectorAll('div')
+                    let containerProfilesObjects = new Map()
+                    tagDivItems.forEach(items => {
+                        const arrayProfiles = items.innerHTML.split(':')
+                        containerProfilesObjects.set(arrayProfiles[0].toLocaleLowerCase().trim(), arrayProfiles[1])
+                    })
+                    formModal.action = `restore/${getID}?_method=patch`
+                    modelFormTitle.innerHTML = `You Want Delete items !`
+                    let converToObject = Object.fromEntries(containerProfilesObjects)
+                    converToObject._id = converToObject.id
+                    delete converToObject.id
+                    renderItemsHadBeenCheck([converToObject])
+                    handleCollapsible()
+                })
+            })
+
+            btnsDestroy.forEach(items => {
+                items.addEventListener('click', function (e) {
+                    btnFormSubmitMultiple.classList.add('hidden')
+                    btnFormSubmitMultiple.classList.remove('block')
+                    btnFormSubmitSing.classList.remove('hidden')
+                    btnFormSubmitSing.classList.add('block')
+                    let tagParent = e.target.parentElement.parentElement
+                    const getID = tagParent.querySelector('.trash_btn--items').value
+                    let profileItems = tagParent.querySelector('.trash_profile-items')
+                    const tagDivItems = profileItems.querySelectorAll('div')
+                    let containerProfilesObjects = new Map()
+                    tagDivItems.forEach(items => {
+                        const arrayProfiles = items.innerHTML.split(':')
+                        containerProfilesObjects.set(arrayProfiles[0].toLocaleLowerCase().trim(), arrayProfiles[1])
+                    })
+                    formModal.action = `delete/destroy?_method=delete`
+                    modelFormTitle.innerHTML = `You Want Delete items !`
+                    let converToObject = Object.fromEntries(containerProfilesObjects)
+                    converToObject._id = converToObject.id
+                    delete converToObject.id
+                    renderItemsHadBeenCheck([converToObject])
+                    handleCollapsible()
+                })
+            })
+
+        }
+        else {
+
+            boxContainerContent.innerHTML = renderItems(data)
+            boxContainerContent.classList.remove("text-center")
+            boxContainerContent.classList.remove("block")
+            boxContainerContent.classList.add("grid")
+            const btnsRestore = document.querySelectorAll('.trash__btn_restore')
+            const btnsDestroy = document.querySelectorAll('.trash__btn_destroy')
+            btnsRestore.forEach(items => {
+                items.addEventListener('click', function (e) {
+                    let tagParent = e.target.parentElement.parentElement
+                    const getID = tagParent.querySelector('.trash_btn--items').value
+                    let profileItems = tagParent.querySelector('.trash_profile-items')
+                    btnFormSubmitMultiple.classList.add('hidden')
+                    btnFormSubmitMultiple.classList.remove('block')
+                    btnFormSubmitSing.classList.remove('hidden')
+                    btnFormSubmitSing.classList.add('block')
+
+                    const tagDivItems = profileItems.querySelectorAll('div')
+                    let containerProfilesObjects = new Map()
+                    tagDivItems.forEach(items => {
+                        const arrayProfiles = items.innerHTML.split(':')
+                        containerProfilesObjects.set(arrayProfiles[0].toLocaleLowerCase().trim(), arrayProfiles[1])
+                    })
+                    formModal.action = `restore/${getID}?_method=patch`
+                    modelFormTitle.innerHTML = `You Want Delete items !`
+                    let converToObject = Object.fromEntries(containerProfilesObjects)
+                    converToObject._id = converToObject.id
+                    delete converToObject.id
+                    renderItemsHadBeenCheck([converToObject])
+                    handleCollapsible()
+                })
+            })
+            btnsDestroy.forEach(items => {
+                items.addEventListener('click', function (e) {
+                    btnFormSubmitMultiple.classList.add('hidden')
+                    btnFormSubmitMultiple.classList.remove('block')
+                    btnFormSubmitSing.classList.remove('hidden')
+                    btnFormSubmitSing.classList.add('block')
+                    let tagParent = e.target.parentElement.parentElement
+                    const getID = tagParent.querySelector('.trash_btn--items').value
+                    let profileItems = tagParent.querySelector('.trash_profile-items')
+                    const tagDivItems = profileItems.querySelectorAll('div')
+                    let containerProfilesObjects = new Map()
+                    tagDivItems.forEach(items => {
+                        const arrayProfiles = items.innerHTML.split(':')
+                        containerProfilesObjects.set(arrayProfiles[0].toLocaleLowerCase().trim(), arrayProfiles[1])
+                    })
+                    formModal.action = `delete/destroy?_method=delete`
+                    modelFormTitle.innerHTML = `You Want Delete items !`
+                    let converToObject = Object.fromEntries(containerProfilesObjects)
+                    converToObject._id = converToObject.id
+                    delete converToObject.id
+                    renderItemsHadBeenCheck([converToObject])
+                    handleCollapsible()
+                })
+            })
+
+        }
+        if (findData.length == 0) {
+            boxContainerContent.classList.add("text-center")
+            boxContainerContent.classList.add("block")
+            boxContainerContent.classList.remove("grid")
+            boxContainerContent.innerHTML = " Not Found  Items to display !"
+
+        }
+
+    }
+    btsSearchData.addEventListener('click', handleSearch)
+    btnsRestore.forEach(items => {
+        items.addEventListener('click', function (e) {
+            let tagParent = e.target.parentElement.parentElement
+            const getID = tagParent.querySelector('.trash_btn--items').value
+            let profileItems = tagParent.querySelector('.trash_profile-items')
+            btnFormSubmitMultiple.classList.add('hidden')
+            btnFormSubmitMultiple.classList.remove('block')
+            btnFormSubmitSing.classList.remove('hidden')
+            btnFormSubmitSing.classList.add('block')
+
+            const tagDivItems = profileItems.querySelectorAll('div')
+            let containerProfilesObjects = new Map()
+            tagDivItems.forEach(items => {
+                const arrayProfiles = items.innerHTML.split(':')
+                containerProfilesObjects.set(arrayProfiles[0].toLocaleLowerCase().trim(), arrayProfiles[1])
+            })
+            formModal.action = `restore/${getID}?_method=patch`
+            modelFormTitle.innerHTML = `You Want Delete items !`
+            let converToObject = Object.fromEntries(containerProfilesObjects)
+            converToObject._id = converToObject.id
+            delete converToObject.id
+            renderItemsHadBeenCheck([converToObject])
+            handleCollapsible()
+        })
+    })
+    btnsDestroy.forEach(items => {
+        items.addEventListener('click', function (e) {
+            btnFormSubmitMultiple.classList.add('hidden')
+            btnFormSubmitMultiple.classList.remove('block')
+            btnFormSubmitSing.classList.remove('hidden')
+            btnFormSubmitSing.classList.add('block')
+            let tagParent = e.target.parentElement.parentElement
+            const getID = tagParent.querySelector('.trash_btn--items').value
+            let profileItems = tagParent.querySelector('.trash_profile-items')
+            const tagDivItems = profileItems.querySelectorAll('div')
+            let containerProfilesObjects = new Map()
+            tagDivItems.forEach(items => {
+                const arrayProfiles = items.innerHTML.split(':')
+                containerProfilesObjects.set(arrayProfiles[0].toLocaleLowerCase().trim(), arrayProfiles[1])
+            })
+            formModal.action = `delete/destroy?_method=delete`
+            modelFormTitle.innerHTML = `You Want Delete items !`
+            let converToObject = Object.fromEntries(containerProfilesObjects)
+            converToObject._id = converToObject.id
+            delete converToObject.id
+            renderItemsHadBeenCheck([converToObject])
+            handleCollapsible()
+        })
+    })
+    btnFormSubmitMultiple.addEventListener('click', function (e) {
+        if (openSubmit()) {
+            switch (true) {
+                case tagSlection.value.toLocaleLowerCase() == 'Delete'.toLocaleLowerCase():
+                    formModal.action = 'delete/multipledestroy?_method=delete'
+                    return true
+                    break;
+                case tagSlection.value.toLocaleLowerCase() == 'Restore'.toLocaleLowerCase():
+                    formModal.action = 'restore/multiple?_method=patch'
+                    return true
+                    break;
+            }
+
+        } else {
+            e.preventDefault()
+        }
+    })
+
+    modalContainer.addEventListener('click', function () {
+        handleCollapsible(false)
+    })
+    formModal.addEventListener('click', function (e) {
+        e.stopPropagation()
+    })
+    btnCheckAll.addEventListener('click', (e) => {
+        btnItems.forEach(items => items.checked = e.target.checked);
+        openSubmit(false)
+    })
+
+    btnItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const haveBeenCheck = document.querySelectorAll('.trash_btn--items:checked');
+            btnCheckAll.checked = haveBeenCheck.length == btnItems.length;
+            openSubmit(false)
+
+        })
+    })
+
+    function renderItemsHadBeenCheck(renderSingleItems = []) {
+        const haveBeenCheck = document.querySelectorAll('.trash_btn--items:checked');
+        const boxContent = document.querySelector('.trash_box_content')
+
+
+
+        if (renderSingleItems.length > 0) {
+            const contentData = renderSingleItems.reduce((beginValue, value, index) => {
+                console.log(value)
+                return beginValue + ` <div class="flex border border-black p-1">
+                   <div class="flex gap-2 truncate">
+                       <div class="hidden">
+                           <input name="id[]" value="${value._id}" class="trash_btn--items" type="text">
+                       </div>
+                       <div class="truncate">
+                           <div class="truncate">Id : ${value._id}</div>
+                           <div class="truncate">Title Musical : ${value['title musical']}</div>
+                           <div class="truncate">deleteAt : ${value['deleteat']}</div>
+                       </div>
+                   </div>
+               </div>`
+            }, '')
+            boxContent.innerHTML = contentData
+        }
+        else {
+            const NewID = [...haveBeenCheck]
+            const findItems = NewID.map((items, index) => {
+                return data.filter(valueData => items.value == valueData._id)
+            })
+            const contentData = findItems.flat().reduce((beginValue, value, index) => {
+                return beginValue + ` <div class="flex border border-black p-1">
+                   <div class="flex gap-2 truncate">
+                       <div class="hidden">
+                           <input name="id[]" value="${value._id}" class="trash_btn--items" type="text">
+                       </div>
+                       <div class="truncate">
+                           <div class="truncate">Id : ${value._id}</div>
+                           <div class="truncate">Title Musical : ${value['title musical']}</div>
+                           <div class="truncate">deleteAt : ${value['deleteat']}</div>
+                       </div>
+                   </div>
+               </div>`
+            }, '')
+            boxContent.innerHTML = contentData
+        }
+    }
+
+    btnSubmit.addEventListener('click', (e) => {
+
+        if (openSubmit()) {
+            btnFormSubmitSing.classList.add('hidden')
+            btnFormSubmitSing.classList.remove('block')
+            btnFormSubmitMultiple.classList.remove('hidden')
+            btnFormSubmitMultiple.classList.add('block')
+            switch (true) {
+                case tagSlection.value.toLocaleLowerCase() == 'Delete'.toLocaleLowerCase():
+                    modelFormTitle.innerHTML = `You Want Delete items !`
+                    renderItemsHadBeenCheck()
+                    handleCollapsible()
+                    break;
+                case tagSlection.value.toLocaleLowerCase() == 'Restore'.toLocaleLowerCase():
+                    modelFormTitle.innerHTML = `You Want Restore items !`
+                    handleCollapsible()
+                    renderItemsHadBeenCheck()
+                    break;
+            }
+        }
+
+    })
+
+    btnFormCannel.addEventListener('click', function (e) {
+        handleCollapsible(false)
+    })
+    function handleCollapsible(requiment = true) {
+        if (requiment) {
+            modalContainer.classList.remove('hidden')
+            modalContainer.classList.add('flex')
+        }
+        else {
+            modalContainer.classList.remove('flex')
+            modalContainer.classList.add('hidden')
+        }
+    }
+    tagSlection.addEventListener('change', (e) => {
+        openSubmit(false)
+
+    })
+
+    function openSubmit(onlyClickAtButtonSubmit = true, renderSingleItems = false) {
+        const haveBeenCheck = document.querySelectorAll('.trash_btn--items:checked');
+        switch (!!tagSlection.value.toLocaleLowerCase()) {
+            case haveBeenCheck.length == 0:
+                btnSubmit.classList.add('opacity-40')
+                btnSubmit.classList.remove('opacity-100')
+                btnSubmit.classList.remove('cursor-pointer')
+                onlyClickAtButtonSubmit ? alert("Please choose minimum a item") : undefined
+                return false;
+                break;
+            case tagSlection.value.toLocaleLowerCase() == 'Delete'.toLocaleLowerCase()
+                || tagSlection.value.toLocaleLowerCase() == 'Restore'.toLocaleLowerCase()
+                && haveBeenCheck.length > 0:
+                btnSubmit.classList.remove('opacity-40')
+                btnSubmit.classList.add('opacity-100')
+                btnSubmit.classList.add('cursor-pointer')
+                return true
+                break;
+            case tagSlection.value.toLocaleLowerCase() == 'Choose Method'.toLocaleLowerCase():
+                onlyClickAtButtonSubmit ? alert("Please choose a method !") : undefined
+                btnSubmit.classList.add('opacity-40')
+                btnSubmit.classList.remove('opacity-100')
+                btnSubmit.classList.remove('cursor-pointer')
+                return false;
+                break;
+
+        }
+    }
+
+</script>

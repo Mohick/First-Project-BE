@@ -1,0 +1,253 @@
+<div class="my-3 font-bold border-4 border-double border-black">
+    <div class="p-1">
+        <div>
+            <div class="border-x-1 ">
+                <a href="/discover/views-data/" class="inline-block self-center	">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-black w-4" viewBox="0 0 320 512">
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 
+                160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5
+                 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                    </svg>
+                </a>
+                <h2 class=" block text-center text-2xl text-emerald-400 ">
+                    Form Created Discover User
+                </h2>
+            </div>
+
+
+        </div>
+        <form class="mt-2 border border-solid border-black p-2"
+            action="/discover/views-data/update/{{{resultData._id}}}?_method=put" enctype="multipart/form-data"
+            method="post">
+            <div>
+                <div class="flex justify-between capitalize ">
+                    <div>
+                        <label for="imageMusical">image Musical </label>
+                    </div>
+                    <div class="alert-image text-xs  leading-7  font-normal truncate">
+                        Please Choose a image has tail file is .png !
+                    </div>
+                </div>
+                <div class="mt-0.5 border-2 border-sky-400 border-dashed">
+                    <input type="file" value="Choose Image" name="imageMusical" class="
+                        hidden 
+                         " id="imageMusical">
+                    <div class="flex px-2  justify-center">
+                        <label class=" w-full text-center" for="imageMusical"> Choose A Image </label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between capitalize ">
+                    <div>
+                        <label for="audioMusical">audio Musical </label>
+                    </div>
+                    <div class="alert-audio text-xs leading-7   font-normal truncate">
+                        Please Choose a audio has tail file is .mp3 !
+                    </div>
+                </div>
+                <div class="mt-0.5 border-2 border-sky-400 border-dashed">
+                    <input type="file" value="Choose Image" name="audioMusical" class="
+                        hidden 
+                         " id="audioMusical">
+                    <div class="flex px-2  justify-center">
+                        <label class=" w-full text-center" for="audioMusical"> Choose A audio </label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between capitalize">
+                    <div>
+                        <label for="titleMusical">title Musical </label>
+                    </div>
+                    <div class="alert-title text-xs leading-7 text-green-400  font-normal truncate">
+                        Please writing name musical !
+                    </div>
+                </div>
+                <div class="mt-0.5 border  border-solid border-black focus-within:p-3 md:focus-within:p-0">
+                    <input value="{{{resultData.titleMusical}}}" type="text" name="titleMusical" class="outline-none px-2 w-full  
+                        focus:fixed top-0 left-0 md:focus:relative focus:border  focus:border-solid focus:border-black
+                        md:focus:border-0  
+                         " id="titleMusical">
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between capitalize">
+                    <div>
+                        <label for="nameSinger">name Singer </label>
+                    </div>
+                    <div class="alert-nameSinger text-xs leading-7  text-green-400 font-normal truncate">
+                        Please writing name singer !
+                    </div>
+                </div>
+                <div class="mt-0.5 border  border-solid border-black focus-within:p-3 md:focus-within:p-0">
+                    <input type="text" name="nameSinger" value="{{{resultData.nameSinger}}}" class="outline-none px-2 w-full  
+                        focus:fixed top-0 left-0 md:focus:relative focus:border  focus:border-solid focus:border-black
+                        md:focus:border-0  
+                         " id="nameSinger">
+                </div>
+            </div>
+            <div>
+                <div class=" justify-between mt-2 capitalize">
+                    <div>
+                        Please Choose a country for musical !
+                    </div>
+                    <select name="country" class=" outline-none p-1 capitalize border-2 border-black " id="country">
+                        <option value="Choose a country">Choose a country</option>
+                        <option value="VN">VN</option>
+                        <option value="USA">USA</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex mb-2 justify-center">
+                <div class="mt-2 inline-block">
+                    <input id="btnSubmit" type="submit" class="p-1 bg-emerald-300 opacity-50 " value="Create">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+    const inputFileImage = document.getElementById("imageMusical")
+    const inputFileAudio = document.getElementById("audioMusical")
+    const inputFileTitle = document.getElementById("titleMusical")
+    const inputNameSinger = document.getElementById("nameSinger")
+    const selectCountry = document.getElementById("country")
+    const buttonSubmit = document.getElementById('btnSubmit')
+
+    inputFileImage.onchange = function (e) {
+        checkFieldImage()
+        openSubmit()
+    }
+    inputFileAudio.onchange = function (e) {
+        checkFieldAudio()
+        openSubmit()
+    }
+    inputFileTitle.onblur = function (e) {
+        checkFieldText('alert-title', inputFileTitle)
+        openSubmit()
+    }
+    inputNameSinger.onblur = function (e) {
+        openSubmit()
+        checkFieldText('alert-nameSinger', inputNameSinger)
+    }
+    selectCountry.onchange = function (e) {
+        openSubmit()
+        checkFieldCountry()
+    }
+    function checkFieldImage() {
+        const alertFiedImage = document.querySelector(".alert-image")
+        if (!!inputFileImage.files[0]) {
+            const nameFile = inputFileImage.files[0].name
+            const detailFile = nameFile.slice(-3, nameFile.length)
+            if (detailFile.trim().toLowerCase() == 'png'.trim().toLowerCase()) {
+                alertFiedImage.classList.remove("text-red-400")
+                alertFiedImage.classList.add("text-green-400")
+                return true
+            } else {
+                alertFiedImage.classList.remove("text-green-400")
+                alertFiedImage.classList.add("text-red-400")
+                return false
+
+            }
+        } else {
+            alertFiedImage.classList.remove("text-green-400")
+            alertFiedImage.classList.add("text-red-400")
+            return false
+        }
+
+    }
+    function checkFieldAudio() {
+        const alertFiedAudio = document.querySelector(".alert-audio")
+        if (!!inputFileAudio.files[0]) {
+            const nameFile = inputFileAudio.files[0].name
+            const detailFile = nameFile.slice(-3, nameFile.length)
+            if (detailFile.trim().toLowerCase() == 'mp3'.trim().toLowerCase()) {
+                alertFiedAudio.classList.remove("text-red-400")
+                alertFiedAudio.classList.add("text-green-400")
+                return true
+            } else {
+                alertFiedAudio.classList.remove("text-green-400")
+                alertFiedAudio.classList.add("text-red-400")
+                return false
+
+            }
+        } else {
+            alertFiedAudio.classList.remove("text-green-400")
+            alertFiedAudio.classList.add("text-red-400")
+            return false
+        }
+
+    }
+    function checkFieldText(tag, valueFied) {
+        const alertFiedText = document.querySelector(`.${tag}`)
+        const value = valueFied.value.trim()
+        if (value.length > 0) {
+            alertFiedText.classList.remove("text-red-400")
+            alertFiedText.classList.add("text-green-400")
+            return true
+        } else {
+            alertFiedText.classList.remove("text-green-400")
+            alertFiedText.classList.add("text-red-400")
+            return false
+        }
+    }
+    function checkFieldCountry() {
+
+        switch (
+        true
+        ) {
+            case selectCountry.value.trim().toLowerCase() == "VN".trim().toLowerCase():
+                selectCountry.classList.remove('border-black')
+                selectCountry.classList.add("border-green-400")
+                selectCountry.classList.remove('border-red-400')
+                return true
+                break;
+            case selectCountry.value.trim().toLowerCase() == "usa".trim().toLowerCase():
+                selectCountry.classList.remove('border-black')
+                selectCountry.classList.remove('border-red-400')
+                selectCountry.classList.add("border-green-400")
+                return true
+                break;
+            case selectCountry.value.trim().toLowerCase() == "Choose a country".trim().toLowerCase():
+                selectCountry.classList.remove('border-black')
+                selectCountry.classList.remove("border-green-400")
+                selectCountry.classList.add('border-red-400')
+                return false
+                break;
+        }
+    }
+
+    function openSubmit() {
+
+        if (!!inputFileImage.files[0] && !!inputFileAudio.files[0]
+            && inputFileTitle.value.length > 0 && inputNameSinger.value.length > 0
+            && (selectCountry.value.trim().toLowerCase() == "VN".trim().toLowerCase()
+                || selectCountry.value.trim().toLowerCase() == "usa".trim().toLowerCase())
+        ) {
+            buttonSubmit.classList.remove('opacity-50')
+            buttonSubmit.classList.add("cursor-pointer")
+            buttonSubmit.classList.add("opacity-100")
+        } else {
+            buttonSubmit.classList.remove("opacity-100")
+            buttonSubmit.classList.remove("cursor-pointer")
+            buttonSubmit.classList.add('opacity-50')
+        }
+    }
+    buttonSubmit.onclick = function (event) {
+       
+        if (
+            checkFieldImage() && checkFieldAudio() && checkFieldCountry() && checkFieldText('alert-nameSinger', inputNameSinger) && checkFieldText('alert-title', inputFileTitle)
+        ) {
+
+        } else {
+            event.preventDefault()
+        }
+    }
+
+</script>

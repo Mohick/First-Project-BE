@@ -24,7 +24,11 @@ const AccountSchema = new Schema(
     timestamps: true,
   }
 );
-AccountSchema.plugin(mongoose_delete, { overrideMethods: true });
+
+AccountSchema.plugin(mongoose_delete, {
+  deletedBy: true,
+  overrideMethods: "all",
+});
 const AccountModel = mongoose.model("Account", AccountSchema);
 
 module.exports = AccountModel;

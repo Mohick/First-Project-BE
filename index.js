@@ -13,6 +13,9 @@ app.use(express.json())
 var morgan = require('morgan')
 app.use(morgan('combined'))
 
+// override mothod form protocol
+var methodOverride = require('method-override')
+app.use(methodOverride('_method'))
 // connect use library express-handlebars allowing protocol http for dev
 const hbs = require('express-handlebars')
 app.engine('.hbs', hbs.engine({ extname: '.hbs' }));
@@ -21,7 +24,7 @@ app.set('views', './src/views');
 
 // use static files
 const path = require('path');
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public/')));
  // Run Connect MongoDB
 connectDB()
 // take and controll routes
