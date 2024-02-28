@@ -47,6 +47,9 @@
     </form>
 </div>
 
+<div class="nameAdmin hidden">
+    {{nameAdmin}}
+</div>
 <script>
     const boxItemsData = document.querySelector('.container__items-data')
     const inputSearchData = document.querySelector('input[type="button"]')
@@ -196,4 +199,30 @@
     formDelete.onclick = function (e) {
         e.stopPropagation()
     }
+    const tagNameAdmin = document.querySelector('.nameAdmin')
+        if (!!tagNameAdmin) {
+            const usernameAdmin = document.querySelector('#usernameAdmin')
+            if ((tagNameAdmin.innerHTML + '').trim().length > 0) {
+                usernameAdmin.innerHTML = `
+                 <div id="header__name--user" class="items-end text-end m-1 p-1.5 capitalize
+                         text-purple-50 relative  rounded hover:text-neutral-950 hover:bg-zinc-200 inline-block no-underline
+                         ">
+                                ${(tagNameAdmin.innerHTML + '').trim()}
+                                <ul class="header__name--user--dropdown">
+                                    <li>
+                                        <a href="/profile">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="/setting">Setting</a>
+                                    </li>
+                                    <li>
+                                        <a href="/grant permissions">grant permissions</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>`
+            }
+        }
 </script>

@@ -1,36 +1,38 @@
 const SchemaAccount = require("../../../Schema/SchemaAccount/Schema");
+const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 class UpdateAcount {
   async viewUpdate(req, res, next) {
     try {
-      const user = SchemaAccount.findById({ _id: req.params.id }).then(
-        (resultData) => {
-          return resultData;
-        }
-      );
+      if (req.session.admin) {
+        Promise.all([
+          SchemaAccount.find({}),
+          SchemaAccount.findById({ _id: req.params.id }),
+          Admin.findOne({ _id: req.session.admin._id }),
+        ]).then(([allAccountUsers, user, admin]) => {
+          if (!!user && !!admin) {
+            const nameAdmin = admin.toObject().username;
+            const singleUser = user.toObject();
+            console.log(user);
+            const allUsers = allAccountUsers.filter((data) => {
+              data = data.toObject();
+              return data.email !== singleUser.email;
+            });
 
-      const allAccountUsers = SchemaAccount.find({}).then((resultData) => {
-        return resultData;
-      });
-
-      Promise.all([allAccountUsers, user]).then(([allAccountUsers, user]) => {
-        if (!!user) {
-          const singleUser = user.toObject();
-          const allUsers = allAccountUsers.filter((data) => {
-            data = data.toObject();
-            return data.email !== singleUser.email;
-          });
-
-          res.render("Account/Views mode/views form update", {
-            allUsers: JSON.stringify(allUsers),
-            singleUser: singleUser,
-          });
-        } else {
-          return res.send("<h1>Please Don't Hack My Projects!</h1> ");
-        }
-      });
+            res.render("Account/Views mode/views form update", {
+              allUsers: JSON.stringify(allUsers),
+              singleUser: singleUser,
+              nameAdmin: nameAdmin,
+            });
+          } else {
+            res.redirect("/login/");
+          }
+        });
+      } else {
+        res.redirect("/login/");
+      }
     } catch (next) {
-      return next();
+      return next;
     }
   }
   async update(req, res, next) {

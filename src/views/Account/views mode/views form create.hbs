@@ -95,7 +95,9 @@
         </form>
     </div>
 </div>
-
+<div class="nameAdmin hidden">
+    {{nameAdmin}}
+</div>
 <script>
 
     const username = document.getElementById("username");
@@ -136,7 +138,7 @@
 
         if (regex.test(email.value)) {
             if (!map.get('check')) {
-                
+
                 alertTag.classList.remove("text-red-600")
                 alertTag.classList.add("text-green-600")
                 return true
@@ -156,7 +158,7 @@
     function checkInputWithLengthGreatThanSixChar(tag, nameAlert) {
         const alertTag = document.querySelector(`.alert-${nameAlert}`)
         if (tag.value.trim().length > 6) {
-            
+
             alertTag.classList.remove("text-red-600")
             alertTag.classList.add("text-green-600")
             return true;
@@ -186,7 +188,7 @@
     function checkReEnterPassword() {
         const alertTag = document.querySelector('.alert-reEnterPassword')
         if (reEnterPassword.value.trim().length > 6 && password.value.trim() == reEnterPassword.value) {
-            
+
             alertTag.classList.remove("text-red-600")
             alertTag.classList.add("text-green-600")
             return true;
@@ -202,7 +204,7 @@
             && password.value.trim().length > 6 && reEnterPassword.value.trim().length > 6
             && reEnterPassword.value == password.value
             && checkUserName() && checkPassword()
-            &&  checkEmail()
+            && checkEmail()
         ) {
             btnSubmit.classList.remove("opacity-50")
             btnSubmit.classList.add("opacity-100")

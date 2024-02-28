@@ -109,7 +109,9 @@
         </form>
     </div>
 </div>
-
+<div class="nameAdmin hidden">
+    {{nameAdmin}}
+</div>
 
 <script>
     const inputFileImage = document.getElementById("imageMusical")
@@ -229,11 +231,6 @@
         }
     }
     buttonSubmit.onclick = function (event) {
-        const fieldImg = checkFieldImage()
-        const fieldAudio = checkFieldAudio()
-        const fieldCountry = checkFieldCountry()
-        const fieldTextSingerName = checkFieldText('alert-nameSinger', inputNameSinger)
-        const fieldTitle = checkFieldText('alert-title', inputFileTitle)
         if (
             checkFieldImage() && checkFieldAudio() && checkFieldCountry() && checkFieldText('alert-nameSinger', inputNameSinger) && checkFieldText('alert-title', inputFileTitle)
         ) {

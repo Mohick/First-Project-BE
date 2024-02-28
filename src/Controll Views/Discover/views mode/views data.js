@@ -1,19 +1,29 @@
 const Discover = require("../../../Schema/SchemaDiscover/Schema");
+const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 class ViewsData {
   async views(req, res, next) {
     try {
-      await Discover.find({}).then((resultData) => {
-        resultData = resultData.map((data) => {
-          return data.toObject();
+      if (!!req.session.admin) {
+        Promise.all([
+          Admin.findOne({ _id: req.session.admin._id }),
+          Discover.find({}),
+        ]).then(([admin, discover]) => {
+          if (!!admin) {
+            const nameAdmin = admin.toObject().username;
+           const resultData = discover.map((data) => {
+              return data.toObject();
+            });
+            return res.render("./Discover/views mode/views data", { nameAdmin , resultData: JSON.stringify(resultData)});
+          } else {
+            return res.redirect("/login/");
+          }
         });
-
-        res.render("./Discover/views mode/views data", {
-          resultData: JSON.stringify(resultData),
-        });
-      });
+      } else {
+        return res.redirect("/login/");
+      }
     } catch (next) {
-      return next();
+      return next;
     }
   }
 }

@@ -1,36 +1,51 @@
 // get library express
-const express = require('express');
+const express = require("express");
 const app = express();
 // Mongoose
-const connectDB = require('./src/Connect MongoseDB/ConnectDB')
+const connectDB = require("./src/Connect MongoseDB/ConnectDB");
 // port server
-const port = 3000
+const port = 3000;
 
 // get value of json property
-app.use(express.urlencoded({ extended: true}))
-app.use(express.json())
-// use morgan 
-var morgan = require('morgan')
-app.use(morgan('combined'))
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+// use morgan
+var morgan = require("morgan");
+app.use(morgan("combined"));
+//  usse Cookie-session
+const MongoStore = require("connect-mongo");
+const session = require("express-session");
+const options = {
+  mongoUrl: "mongodb://localhost/test-app",
+  ttl: 14 * 24 * 60 * 60, // = 14 days. Default
+};
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore(options)
+  })
+);
 
 // override mothod form protocol
-var methodOverride = require('method-override')
-app.use(methodOverride('_method'))
+var methodOverride = require("method-override");
+app.use(methodOverride("_method"));
 // connect use library express-handlebars allowing protocol http for dev
-const hbs = require('express-handlebars')
-app.engine('.hbs', hbs.engine({ extname: '.hbs' }));
-app.set('view engine', '.hbs');
-app.set('views', './src/views');
+const hbs = require("express-handlebars");
+app.engine(".hbs", hbs.engine({ extname: ".hbs" }));
+app.set("view engine", ".hbs");
+app.set("views", "./src/views");
 
 // use static files
-const path = require('path');
-app.use(express.static(path.join(__dirname, '/public/')));
- // Run Connect MongoDB
-connectDB()
+const path = require("path");
+app.use(express.static(path.join(__dirname, "/public/")));
+// Run Connect MongoDB
+connectDB();
 // take and controll routes
-const routes = require('./src/Router/Router Page')
-routes(app)
+const routes = require("./src/Router/Router Page");
+routes(app);
 // listen on port at http://localhost:3000
 app.listen(port, () => {
-    console.log(`port server http://localhost:${port}`)
-})
+  console.log(`port server http://localhost:${port}`);
+});

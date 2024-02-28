@@ -1,20 +1,32 @@
 const DataUser = require("../../../Schema/SchemaAccount/Schema");
+const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 class viewsTrash {
   async views(req, res, next) {
     try {
-      await DataUser.findDeleted()
-      .then((resultData) => {
-        resultData = resultData.map((data) => {
-          return data.toObject();
+      if (!!req.session.admin) {
+        Promise.all([
+          Admin.findOne({ _id: req.session.admin._id }),
+          DataUser.findDeleted(),
+        ]).then(([admin, account]) => {
+          if (!!admin) {
+            const nameAdmin = admin.toObject().username;
+            const resultData = account.map((data) => {
+              return data.toObject();
+            });
+            return res.render("./Account/views mode/views trash", {
+              nameAdmin,
+              resultData: JSON.stringify(resultData),
+            });
+          } else {
+            return res.redirect("/login/");
+          }
         });
-        
-        res.render("./Account/views mode/views trash", {
-          resultData: JSON.stringify(resultData),
-        });
-      });
+      } else {
+        return res.redirect("/login/");
+      }
     } catch (next) {
-      return next();
+      return next;
     }
   }
 }

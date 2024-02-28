@@ -13,6 +13,7 @@ class CreateAcount {
         await SchemaAccount.find({ email: req.body.email }).then((data) => {
           if (!!data) {
             const formAccount = req.body;
+            req.session.account = formAccount;
             const formatData = new SchemaAccount(formAccount);
             formatData.save();
             return res.redirect("back");
