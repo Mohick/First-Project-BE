@@ -1,8 +1,10 @@
 const path = require("path");
 const SchemaDiscover = require("../../../Schema/SchemaDiscover/Schema");
+const SchemaAccount = require("../../../Schema/SchemaAccount/Schema");
 const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 const fs = require("fs");
+const session = require("express-session");
 class UpdateDiscover {
   async viewUpdate(req, res, next) {
     try {
@@ -53,6 +55,7 @@ class UpdateDiscover {
         )}`
       )
     );
+
     fs.unlinkSync(
       path.join(
         __filename,
@@ -78,6 +81,41 @@ class UpdateDiscover {
     await SchemaDiscover.restore({ _id: { $in: req.body.id } }).then((data) => {
       return res.redirect("back");
     });
+  }
+
+  async updateLike(req, res, next) {
+    try {
+      const formAccount = req.body;
+      Promise.all([SchemaAccount.find({ _id: req.session.user._id }),SchemaDiscover.findOne({ _id: req.body._id })]) 
+      .then(([account,item]) => {
+        if (!!account) {
+      if (
+        item.imageMusical == formAccount.imageMusical &&
+        item.titleMusical == formAccount.titleMusical &&
+        item.audioMusical == formAccount.audioMusical &&
+        item.nameSinger == formAccount.nameSinger
+      ) {
+        updateItem()
+      } else {
+        res.redirect("/");
+      }
+    }else {
+    res.redirect("/");
+   }
+      })
+    
+      function updateItem() {
+        SchemaDiscover.findOneAndUpdate(
+          { _id: req.body._id },
+          formAccount
+        ).then(() => {
+          res.json({ message: "success" });
+        });
+      }
+      
+    } catch (error) {
+      
+    }
   }
 }
 

@@ -1,11 +1,21 @@
 // get library express
 const express = require("express");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 // Mongoose
 const connectDB = require("./src/Connect MongoseDB/ConnectDB");
 // port server
 const port = 3000;
-
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Cập nhật địa chỉ của ứng dụng React của bạn
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 // get value of json property
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -17,14 +27,25 @@ const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const options = {
   mongoUrl: "mongodb://localhost/test-app",
-  ttl: 14 * 24 * 60 * 60, // = 14 days. Default
+  ttl: 90 * 24 * 60 * 60, // = 14 days. Default
+  cookie: {
+    secure: false, // Thay đổi nếu sử dụng HTTPS
+    httpOnly: true,
+    sameSite: 'Lax',
+  },
 };
+
 app.use(
   session({
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    store: new MongoStore(options)
+    store: new MongoStore(options),
+    cookie: {
+      secure: false, // Thay đổi nếu sử dụng HTTPS
+      httpOnly: true,
+      sameSite: 'Lax',
+    }
   })
 );
 

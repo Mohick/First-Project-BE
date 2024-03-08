@@ -6,7 +6,10 @@ class HomePageDiscover {
         await Admin.findOne({ _id: req.session.admin._id }).then((result) => {
           if (!!result) {
             const nameAdmin = result.toObject().username;
-            return res.render("./Discover/choose mode",{nameAdmin});
+            req.session.admin
+            // return res.render("./Discover/choose mode",{nameAdmin});
+            
+          res.json(req.session)
           } else {
             return res.redirect("/login/");
           }

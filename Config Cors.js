@@ -1,10 +1,12 @@
 // config cors server for frontend
 const express = require("express");
-const cors = require("cors");
-const app = express();
-app.use(cors());
-const corsOptions = {
-  origin: "*",
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+
+
+var corsOptions = {
+  origin: 'http://localhost:5173', // Cập nhật địa chỉ của ứng dụng React của bạn
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: 'Content-Type',
 };
+
 module.exports = corsOptions;

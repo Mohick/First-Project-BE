@@ -3,6 +3,7 @@ const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 class viewsTrash {
   async views(req, res, next) {
+    console.log(req.session);
     try {
       if (!!req.session.admin) {
         Promise.all([
