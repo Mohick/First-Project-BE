@@ -1,47 +1,48 @@
-const SchemaAccount = require("../../../Schema/SchemaAccount/Schema");
+const SchemaAccount = require("../../../../Schema/SchemaAccount/Schema");
 
-class CreateAccount {
+class CreateAccountClient {
   async create(req, res, next) {
     // Regular expression to validate email format
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
       const { username, email, password } = req.body;
 
-      // Checking if username, email, and password meet the required criteria
+      // Check if input data meets the required criteria
       if (
         username.trim().length > 6 &&
         regex.test(email) &&
-        password.trim().length > 6 &&
+        password.trim().length >= 8 &&
         password.trim() !== email
       ) {
-        // Checking if the email is already associated with an existing account
+        // Check if an account with the provided email already exists
         const existingAccount = await SchemaAccount.findOne({ email: email });
 
+        // If the account does not exist, proceed with creating a new account
         if (!existingAccount) {
-          // Saving the account information to the database if it's a new account
+          // Save the new account data
           const formatData = new SchemaAccount(req.body);
           await formatData.save();
 
-          // Setting session data for the new account
+          // Create session for the new account
           req.session.account = {
             email: email,
             password: password,
           };
-          // Returning success message if the account is created successfully
+          // Return success message if the account is created successfully
           return res.json({ message: "success" });
         } else {
-          // Redirecting back if the email is already in use
+          // Redirect back if an account with the provided email already exists
           return res.redirect("back");
         }
       } else {
-        // Redirecting back if the input data doesn't meet the required criteria
+        // Redirect back if input data does not meet the required criteria
         return res.redirect("back");
       }
     } catch (error) {
-      // Handling errors
-      return next;
+      // Handle errors by passing them to the next middleware
+      return next(error);
     }
   }
 }
 
-module.exports = new CreateAccount();
+module.exports = new CreateAccountClient();

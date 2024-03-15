@@ -2,18 +2,16 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-app.use(cors());
+const optionsCors = require("./Config Cors")
+
+app.use(cors(optionsCors))
 // Mongoose
 const connectDB = require("./src/Connect MongoseDB/ConnectDB");
-// port server
-const port = 3000;
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Cập nhật địa chỉ của ứng dụng React của bạn
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+// port server  
+const port =Number(process.env.port) || 3000;
+
+require('dotenv').config();
+
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 // get value of json property
@@ -22,17 +20,14 @@ app.use(express.json());
 // use morgan
 var morgan = require("morgan");
 app.use(morgan("combined"));
+// Run Connect MongoDB
+connectDB();
 //  usse Cookie-session
-const MongoStore = require("connect-mongo");
-const session = require("express-session");
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const options = {
-  mongoUrl: "mongodb://localhost/test-app",
-  ttl: 90 * 24 * 60 * 60, // = 14 days. Default
-  cookie: {
-    secure: false, // Thay đổi nếu sử dụng HTTPS
-    httpOnly: true,
-    sameSite: 'Lax',
-  },
+  mongoUrl: "mongodb://localhost/API_Best_Music",
+  ttl: Number( process.env.ageCookiesSession) || 7 * 24 * 60 * 60, // = 7 days. Default
 };
 
 app.use(
@@ -40,14 +35,16 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    store: new MongoStore(options),
+    store: MongoStore.create(options),
     cookie: {
-      secure: false, // Thay đổi nếu sử dụng HTTPS
-      httpOnly: true,
+      secure: Boolean(process.env.security), // Thay đổi nếu sử dụng HTTPS
+      httpOnly: Boolean(process.env.httpOnly),
       sameSite: 'Lax',
-    }
+      maxAge: 1000 * 60 * 60 * 24 * Number( process.env.ageCookiesSession),
+    },
   })
 );
+
 
 // override mothod form protocol
 var methodOverride = require("method-override");
@@ -61,8 +58,7 @@ app.set("views", "./src/views");
 // use static files
 const path = require("path");
 app.use(express.static(path.join(__dirname, "/public/")));
-// Run Connect MongoDB
-connectDB();
+app.use(express.static('.'))
 // take and controll routes
 const routes = require("./src/Router/Router Page");
 routes(app);

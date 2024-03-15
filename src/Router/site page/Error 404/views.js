@@ -1,19 +1,26 @@
-const Admin = require('../../../Schema/SchemaAdmin/Admin')
+// Import the Admin schema
+const Admin = require('../../../Schema/SchemaAdmin/Admin');
 
-
+// Middleware to handle 404 errors
 function handleError404(req, res, next) {
-    if(!!req.session.admin) {
+    // Check if there is an admin session
+    if (!!req.session.admin) {
+        // Find the admin by session ID
         Admin.findOne({ _id: req.session.admin._id }).then((result) => {
+            // If admin is found
             if (!!result) {
+                // Render the 404 error page
                 res.status(404).render('Error404/Views');
             } else {
-                return res.redirect("/login/");
+                // Redirect back if admin is not found
+                return res.redirect("back");
             }
-        })
-    }
-    else {
-        return res.redirect("/login/");
+        });
+    } else {
+        // Redirect back if there is no admin session
+        return res.redirect("back");
     }
 }
 
-module.exports = handleError404
+// Export the middleware
+module.exports = handleError404;

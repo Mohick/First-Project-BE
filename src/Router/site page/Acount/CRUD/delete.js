@@ -1,9 +1,15 @@
 const express = require("express");
 const routes = express.Router();
-const PageViews = require("../../../../Controll Views/Account/CRUD/Delete");
+const CRUD = require("../../../../Controll Views/Account/CRUD/Delete");
 
-routes.delete("/destroy/", PageViews.destroy);
-routes.delete("/multipledestroy/", PageViews.multipleDestroy);
-routes.delete("/:id", PageViews.softDelete);
+
+// Route for deleting multiple items
+routes.delete("/multipledestroy", CRUD.multipleDestroy);
+
+// Route for permanently destroying an item
+routes.delete("/destroy", CRUD.destroy);
+
+// Route for deleting a single item
+routes.delete("/:id", CRUD.softDelete);
 
 module.exports = routes;

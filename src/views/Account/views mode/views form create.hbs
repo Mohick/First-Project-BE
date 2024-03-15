@@ -114,7 +114,7 @@
             if (username.value.trim() !== email.value) {
                 alertTag.classList.remove("text-red-600")
                 alertTag.classList.add("text-green-600")
-                alertTag.innerHTML = ("Please fill 6 character with maximum is 24 character !");
+                alertTag.innerHTML = ("Please fill 6 character with maximum is 22 character !");
                 return true;
             } else {
                 alertTag.innerHTML = ("your Username must  other Email !");
@@ -187,7 +187,7 @@
     }
     function checkReEnterPassword() {
         const alertTag = document.querySelector('.alert-reEnterPassword')
-        if (reEnterPassword.value.trim().length > 6 && password.value.trim() == reEnterPassword.value) {
+        if (reEnterPassword.value.trim().length > 8 && password.value.trim() == reEnterPassword.value) {
 
             alertTag.classList.remove("text-red-600")
             alertTag.classList.add("text-green-600")

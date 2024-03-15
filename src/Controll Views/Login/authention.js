@@ -2,21 +2,27 @@ const Admin = require("../../Schema/SchemaAdmin/Admin");
 
 class AuthenTionAdmin {
   async AuthenTionAdmin(req, res, next) {
+    const {email, password} =  req.body
     try {
-      await Admin.findOne({ email: req.body.email }).then((admin) => {
-        if (!!admin) {
-            if(admin.email == req.body.email && admin.password == req.body.password) {
-                req.session.admin = admin;
-                res.redirect("/");
-            }
-            else {
-                res.redirect("/login/");
-            }
-        } else {
-          res.redirect("/login/");
-        }
-      });
-    } catch (error) {}
+      // Find admin and session data
+      const [admin, session] = await Promise.all([
+        Admin.findOne({ email: email }),
+      ]);
+
+      // Check if admin exists and credentials match
+      if (admin && admin.email === email && admin.password === password) {
+        // Store admin data in session
+        req.session.admin = admin;
+        res.redirect("/");
+      } else {
+        // Redirect back if admin doesn't exist or credentials don't match
+        res.redirect("back");
+      }
+    } catch (error) {
+      // Handle errors
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   }
 }
 

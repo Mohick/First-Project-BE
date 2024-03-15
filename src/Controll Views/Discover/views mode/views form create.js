@@ -1,23 +1,31 @@
-const DataUser = require("../../../Schema/SchemaDiscover/Schema");
 const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 class ViewsFormCreated {
+  // Render view for form creation
   async views(req, res, next) {
     try {
+      // Check if an admin session exists
       if (!!req.session.admin) {
+        // Find admin data by ID
         await Admin.findOne({ _id: req.session.admin._id }).then((result) => {
+          // Check if admin exists
           if (!!result) {
+            // Extract admin username
             const nameAdmin = result.toObject().username;
-            return res.render("./Discover/views mode/views form create",{nameAdmin});
+            // Render form creation view with admin username
+            return res.render("./Discover/views mode/views form create", { nameAdmin });
           } else {
-            return res.redirect("/login/");
+            // Redirect to the previous page if admin doesn't exist
+            return res.redirect("back");
           }
         });
       } else {
-        return res.redirect("/login/");
+        // Redirect to the previous page if admin session doesn't exist
+        return res.redirect("back");
       }
-    } catch (next) {
-      return next();
+    } catch (error) {
+      // Handle errors by passing them to the next middleware
+      return next(error);
     }
   }
 }

@@ -1,11 +1,14 @@
+// Import Express module
 const express = require('express');
-const routes= express.Router();
-const PageViews= require('../../../../Controll Views/Discover/views mode/views json')
-const UpdateLike= require('../../../../Controll Views/Discover/CRUD/Update')
-const corsOptions = require('../../../../../Config Cors')
-const cors = require('cors')
 
+// Create a router instance
+const routes = express.Router();
 
-routes.patch("/uploadLiked/",cors(corsOptions),UpdateLike.updateLike)
-routes.get('/', cors(corsOptions),PageViews.json)
-module.exports = routes
+// Import the JSON views controller
+const PageViews = require('../../../../Controll Views/Discover/views mode/views json');
+
+// Define route for JSON views
+routes.get('/', PageViews.json);
+
+// Export the router
+module.exports = routes;

@@ -1,31 +1,37 @@
-const DataUser = require("../../../Schema/SchemaDiscover/Schema");
+const DataDiscover = require("../../../Schema/SchemaDiscover/Schema");
 const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
-class viewsTrash {
+class ViewsTrash {
   async views(req, res, next) {
     try {
+      // Check if an admin session exists
       if (!!req.session.admin) {
-        Promise.all([
-          Admin.findOne({ _id: req.session.admin._id }),
-          DataUser.findDeleted(),
-        ]).then(([admin, discover]) => {
+        // Find admin data by ID
+        await Admin.findOne({ _id: req.session.admin._id }).then(async (admin) => {
+          // Check if admin exists
           if (!!admin) {
+            // Extract admin username
             const nameAdmin = admin.toObject().username;
-           const resultData = discover.map((data) => {
-              return data.toObject();
-            });
-            return res.render("./Discover/views mode/views trash", { nameAdmin , resultData: JSON.stringify(resultData)});
+            // Find deleted Discover items
+            const discover = await DataDiscover.findDeleted();
+            // Convert discover items to plain objects
+            const resultData = discover.map((data) => data.toObject());
+            // Render trash view with admin username and deleted Discover items
+            return res.render("./Discover/views mode/views trash", { nameAdmin, resultData: JSON.stringify(resultData) });
           } else {
-            return res.redirect("/login/");
+            // Redirect to the previous page if admin doesn't exist
+            return res.redirect("back");
           }
         });
       } else {
-        return res.redirect("/login/");
+        // Redirect to the previous page if admin session doesn't exist
+        return res.redirect("back");
       }
-    } catch (next) {
-      return next();
+    } catch (error) {
+      // Handle errors by passing them to the next middleware
+      return next(error);
     }
   }
 }
 
-module.exports = new viewsTrash();
+module.exports = new ViewsTrash();

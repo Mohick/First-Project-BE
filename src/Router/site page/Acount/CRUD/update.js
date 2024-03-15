@@ -1,10 +1,17 @@
 const express = require("express");
 const routes = express.Router();
-const PageViews = require("../../../../Controll Views/Account/CRUD/Update");
+const CRUD = require("../../../../Controll Views/Account/CRUD/Update");
 
-routes.patch("/multiple/", PageViews.multipleRestore);
-routes.patch("/:id/", PageViews.restore);
-routes.put("/:id/", PageViews.update);
-routes.get("/:id/", PageViews.viewUpdate);
+// Route for updating multiple items
+routes.patch("/multiple", CRUD.multipleRestore);
+
+// Route for restoring an item
+routes.patch("/:id", CRUD.restore);
+
+// Route for updating an item
+routes.put("/:id", CRUD.update);
+
+// Route for viewing an item
+routes.get("/:id", CRUD.viewUpdate);
 
 module.exports = routes;

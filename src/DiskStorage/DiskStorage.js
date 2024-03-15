@@ -1,27 +1,36 @@
 const multer = require("multer");
-const proFiles = multer.diskStorage({
+
+// Define storage options for multer
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    switch (true) {
-      case file.fieldname.trim().toLowerCase() == "imageMusical".trim().toLowerCase():
+    // Define destination based on file fieldname
+    switch (file.fieldname.toLowerCase()) {
+      case "imagemusical":
         cb(null, "./public/img/");
         break;
-      case file.fieldname.trim().toLowerCase() == "audioMusical".trim().toLowerCase():
+      case "audiomusical":
         cb(null, "./public/audio/");
+        break;
+      default:
+        cb(new Error("Invalid fieldname"));
     }
   },
   filename: function (req, file, cb) {
-    switch (true) {
-      case file.fieldname.trim().toLowerCase() == "imageMusical".trim().toLowerCase():
-        const img = file.fieldname + Date.now() + ".png";
-        cb(null, img);
+    // Define filename based on file fieldname
+    switch (file.fieldname.toLowerCase()) {
+      case "imagemusical":
+        cb(null, `${file.fieldname}${Date.now()}.png`);
         break;
-      case file.fieldname.trim().toLowerCase() == "audioMusical".trim().toLowerCase():
-        const voice = file.fieldname + Date.now() + ".mp3";
-        cb(null, voice);
+      case "audiomusical":
+        cb(null, `${file.fieldname}${Date.now()}.mp3`);
+        break;
+      default:
+        cb(new Error("Invalid fieldname"));
     }
   },
 });
 
-const upload = multer({ storage: proFiles });
+// Initialize multer with defined storage options
+const upload = multer({ storage: storage });
 
 module.exports = upload;

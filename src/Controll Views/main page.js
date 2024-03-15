@@ -1,22 +1,31 @@
 const Admin = require("../Schema/SchemaAdmin/Admin");
-class MainPage {
+
+class MainPageController {
   async home(req, res, next) {
     try {
-      if (!!req.session.admin) {
-        await Admin.findOne({ _id: req.session.admin._id }).then((result) => {
-          if (!!result) {
-            const nameAdmin = result.toObject().username;
-            return res.render('home page',{nameAdmin});
-          } else {
-            return res.redirect("/login/");
-          }
-        });
+      // Check if admin is logged in
+      if (req.session.admin) {
+        // Find admin data
+        const result = await Admin.findOne({ _id: req.session.admin._id });
+        if (result) {
+          // Render home page with admin name
+          const nameAdmin = result.toObject().username;
+          return res.render('home page', { nameAdmin });
+        } else {
+          // Redirect back if admin data is not found
+          return res.redirect("back");
+        }
       } else {
-        return res.redirect("/login/");
+        // Redirect back if admin is not logged in
+        return res.redirect("back");
       }
-    } catch (next) {
-      return next;
+    } catch (error) {
+      // Handle errors
+      console.error("Error in MainPageController:", error);
+      // Pass the error to the next middleware
+      next(error);
     }
   }
 }
-module.exports = new MainPage();
+
+module.exports = new MainPageController();

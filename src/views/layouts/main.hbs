@@ -5,19 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading...</title>
-    <link rel="stylesheet" href="/taiwincss/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        clifford: '#da373d',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="/public/tailwindcss/style.css">
+    <link rel="stylesheet" href="/public/tailwindcss/tailwind.css">
+
+
 </head>
 
 <body>
@@ -40,16 +31,16 @@
                         <div>
                             <a href="/login/" class="items-end text-end m-1 p-1.5 capitalize
                          text-purple-50 rounded hover:text-neutral-950 hover:bg-zinc-200 inline-block no-underline
-                         ">Login</a>
+                         ">Login
+                         </a>
                         </div>
                     </div>
 
                 </div>
             </div>
             <div class=" flex-1 md:hidden order-1">
-                <div class="flex block justify-start items-center  h-full p-1">
+                <div class="flex  justify-start items-center  h-full p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="menu w-5 block fill-slate-50" viewBox="0 0 448 512">
-                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                         <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 
                             256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 
                             17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
@@ -60,41 +51,14 @@
         {{!-- modal --}}
         <div class="close-modal-menu hidden fixed top-0 left-0 right-0 bottom-0 bg-black/[.2] modal-login  h-screen  ">
             <div class="container form_modal m-auto h-full bg-white">
-                <div class="  flex h-4/5 flex-col">
+                <div class=" z-30 flex h-4/5 flex-col">
                     <div class="overflow-y-auto  flex-1  ">
                         <ul>
                             <li><a class="capitalize block text-center border-l-zinc-950 border-b"
-                                    href="/profile/">Profile</a></li>
-                            <li>
-                                <a class="capitalize block text-center border-l-zinc-950 border-b" href="/setting">
-                                    Setting
-                                </a>
-                            </li>
-                            <li>
-                                <a class="capitalize block text-center border-l-zinc-950 border-b"
-                                    href="/grant permissions/">Grant permissions</a>
-                            </li>
+                                    href="/logout/">logout</a></li>
                         </ul>
                     </div>
-                    <div class=" flex justify-end flex-col">
-                        {{#if false}}
 
-                        <div class="m-1">
-                            <a href="/logout/"
-                                class="capitalize bg-amber-300 block text-center border-l-zinc-950 border-b">Logout</a>
-                        </div>
-                        <div class="m-1">
-                            <div
-                                class="close-modal-menu capitalize  text-center bg-rose-600 border-l-zinc-950 border-b">
-                                Close</div>
-                        </div>
-                        {{else}}
-                        <div class="m-1">
-                            <a href="/login/"
-                                class="capitalize block text-center bg-green-400 border-l-zinc-950 border-b">Login</a>
-                        </div>
-                        {{/if}}
-                    </div>
                 </div>
 
             </div>
@@ -152,8 +116,8 @@
                 </div>
                 <div class="py-2">
                     <div>
-                        <div class="p-1 py-1 inline-block">
-                            <a href="https://www.facebook.com/profile.php?id=100037548151586" class="block flex gap-1"
+                        <div class="p-1 py-1  inline-block">
+                            <a href="https://www.facebook.com/profile.php?id=100037548151586" class="flex  gap-1"
                                 target="_blank" rel="noopener noreferrer">
                                 <div><svg class='w-5 fill-slate-50 ' xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
@@ -169,7 +133,7 @@
                     </div>
                     <div>
                         <div class="p-1 inline-block">
-                            <a href="https://www.linkedin.com/in/du-nhan-33b4bb279/" class="block flex gap-1"
+                            <a href="https://www.linkedin.com/in/du-nhan-33b4bb279/" class=" flex gap-1"
                                 target="_blank" rel="noopener noreferrer">
                                 <div><svg xmlns="http://www.w3.org/2000/svg" class='w-5 fill-slate-50 '
                                         viewBox="0 0 448 512">
@@ -244,22 +208,13 @@
             const usernameAdmin = document.querySelector('#usernameAdmin')
             if ((nameAdmin.innerHTML + '').trim().length > 0) {
                 usernameAdmin.innerHTML = `
-                 <div id="header__name--user" class="items-end text-end m-1 p-1.5 capitalize
+                 <div id="header__name--user" z-30 class="items-end relative text-end m-1 p-1.5 capitalize
                          text-purple-50 relative  rounded hover:text-neutral-950 hover:bg-zinc-200 inline-block no-underline
                          ">
                                 ${(nameAdmin.innerHTML + '').trim()}
-                                <ul class="header__name--user--dropdown">
+                                <ul class="header__name--user--dropdown absolute z-30 right-0 top-100 hidden">
                                     <li>
-                                        <a href="/profile">Profile</a>
-                                    </li>
-                                    <li>
-                                        <a href="/setting">Setting</a>
-                                    </li>
-                                    <li>
-                                        <a href="/grant permissions">grant permissions</a>
-                                    </li>
-                                    <li>
-                                        <a href="/logout">Logout</a>
+                                        <a class="block hover:bg-gray-300" href="/logout">Logout</a>
                                     </li>
                                 </ul>
                             </div>`
