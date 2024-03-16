@@ -10,7 +10,7 @@ const PageViewData = require('./views mode/views data');
 const pageViewCreate = require('./views mode/views form create');
 const pageViewTrash = require('./views mode/view trash');
 const pageViewJson = require('./views mode/views json');
-const CRUD = require('./Send For Client/CRUD/Update')
+const CRUD = require('./Send For Client/session discover')
 // Define routes for different functionalities
 routes.use('/trash/', pageViewTrash); // Route for trash view
 routes.use('/format-json/', pageViewJson); // Route for JSON view

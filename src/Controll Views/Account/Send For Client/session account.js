@@ -1,9 +1,8 @@
 const SchemaAccount = require("../../../Schema/SchemaAccount/Schema");
-const Admin = require("../../../Schema/SchemaAdmin/Admin");
 
 class SessionAccountClient {
   // Retrieves session data for the logged-in account
-  async sessionDataAccount(req, res) {
+  async autoLogin(req, res) {
     try {
       if (!!req.session.account) {
         // Find the account based on email and password stored in session
@@ -30,21 +29,24 @@ class SessionAccountClient {
     try {
       const { email, password } = req.body;
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
       if (regex.test(email) && !!password) {
         // Find the account based on provided email and password
-        await SchemaAccount.findOne({
-          email: email,
-          password: password,
+        
+       
+      await  SchemaAccount.find({
+          email: (""+email).trim(),
+          password: (""+password).trim()
         }).then((resultData) => {
           if (!!resultData) {
             // Set session data for the logged-in account
-            const session = (req.session.account = {
+          req.session.account = {
               email: email,
               password: password,
-            });
-            res.json(session);
+            } 
+           console.log(req.session.account);
+            res.json(req.session.account);
           } else {
+            console.log(3);
             res.json({ message: "Error" });
           }
         });
@@ -52,6 +54,7 @@ class SessionAccountClient {
         res.json({ message: "Error" });
       }
     } catch (error) {
+      console.log(error);
       res.json({ message: "Error" });
     }
   }

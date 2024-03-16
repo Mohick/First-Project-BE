@@ -1,4 +1,3 @@
-
 const SchemaDiscover = require("../../../../Schema/SchemaDiscover/Schema");
 const SchemaAccount = require("../../../../Schema/SchemaAccount/Schema");
 
@@ -7,7 +6,6 @@ class UpdateDiscoverClient {
   async updateLike(req, res, next) {
     try {
       const formAccount = req.body;
-
       // Fetch account and discover item data
       const [account, item] = await Promise.all([
         SchemaAccount.find({ _id: formAccount.iduser }),
@@ -33,22 +31,18 @@ class UpdateDiscoverClient {
         // Redirect if account is not found
         res.redirect("/");
       }
+      // Function to update the discover item
+      function updateItem(formAccount) {
+        SchemaDiscover.findOneAndUpdate({ _id: req.body._id }, formAccount).then((result) => {
+          
+          res.json({ message: "success" });
+        }).catch((err) => {
+          res.json({ message: "wrong" }); 
+        });
+      }
     } catch (error) {
       // Handle errors
       console.error(error);
-      return error;
-    }
-  }
-
-  // Function to update the discover item
-  async updateItem(formAccount) {
-    try {
-      await SchemaDiscover.findOneAndUpdate(
-        { _id: req.body._id },
-        formAccount
-      );
-      res.json({ message: "success" });
-    } catch (error) {
       return error;
     }
   }

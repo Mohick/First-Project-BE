@@ -20,7 +20,6 @@ class AuthenTionAdmin {
       }
     } catch (error) {
       // Handle errors
-      console.error(error);
       res.status(500).send("Internal Server Error");
     }
   }

@@ -1,39 +1,43 @@
-
 const SchemaAccount = require("../../../../Schema/SchemaAccount/Schema");
 
 class UpdateAccountClient {
   async updateLike(req, res, next) {
-    const { id, methodLike, idItem } = req.body;
-    // Search for the current account using the provided ID
-    const Account = await SchemaAccount.findOne({ _id: id }).then(
-      (data) => data
-    );
-    // Check if the account exists
-    switch (!!Account._id) {
-      // Handle different like methods
-      case (methodLike + "").toLocaleLowerCase().trim() ==
-        "addlike".toLocaleLowerCase().trim():
-        // Add the liked item to the account's liked array
-        Account.liked.push(idItem);
-        await SchemaAccount.updateOne({ _id: id }, Account).then(
-          (data) => data
-        );
-        res.json({ message: "Update" });
-        break;
+    try {
+      const { id, methodLike, idItem } = req.body;
+      // Search for the current account using the provided ID
+      const Account = await SchemaAccount.findOne({ _id: id }).then(
+        (data) => data
+      );
+      // Check if the account exists
+      switch (!!Account._id) {
+        // Handle different like methods
+        case (methodLike + "").toLocaleLowerCase().trim() ==
+          "addlike".toLocaleLowerCase().trim():
+          // Add the liked item to the account's liked array
+          Account.liked.push(idItem);
+          await SchemaAccount.updateOne({ _id: id }, Account).then(
+            (data) => data
+          );
+          res.json({ message: "Update" });
+          break;
 
-      case (methodLike + "").toLocaleLowerCase().trim() ==
-        "unlike".toLocaleLowerCase().trim():
-        // Remove the unliked item from the account's liked array
-        const newLike = Account.liked.filter(
-          (idProduct) => idProduct != idItem
-        );
-        Account.liked = newLike;
-        await SchemaAccount.updateOne({ _id: id }, Account).then(
-          (data) => data
-        );
+        case (methodLike + "").toLocaleLowerCase().trim() ==
+          "unlike".toLocaleLowerCase().trim():
+          // Remove the unliked item from the account's liked array
+          const newLike = Account.liked.filter(
+            (idProduct) => idProduct != idItem
+          );
+          Account.liked = newLike;
+          await SchemaAccount.updateOne({ _id: id }, Account).then(
+            (data) => data
+          );
 
-        res.json({ message: "Update" });
-        break;
+          res.json({ message: "Update" });
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+      return res.json({ message: false });
     }
   }
 
@@ -94,7 +98,6 @@ class UpdateAccountClient {
       return res.json({ message: false });
     }
   }
-
 }
 
 module.exports = new UpdateAccountClient();

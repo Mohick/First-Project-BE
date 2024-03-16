@@ -13,7 +13,6 @@ class ViewsTrash {
           SchemaAccount.findDeleted({}),
         ]).then(([admin, account]) => {
           if (!!admin) {
-            console.log(account);
             // Extract admin username and convert deleted account data to JSON
             const nameAdmin = admin.toObject().username;
             const resultData = account.map((data) => {

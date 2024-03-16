@@ -33,19 +33,18 @@ const options = {
 app.use(
   session({
     secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: true,
+    resave: JSON.parse(process.env.security),
+    saveUninitialized: JSON.parse(process.env.httpOnly),
     store: MongoStore.create(options),
     cookie: {
-      secure: Boolean(process.env.security), // Thay đổi nếu sử dụng HTTPS
-      httpOnly: Boolean(process.env.httpOnly),
+      secure: false, // Thay đổi nếu sử dụng HTTPS
+      httpOnly: true,
       sameSite: 'Lax',
       maxAge: 1000 * 60 * 60 * 24 * Number( process.env.ageCookiesSession),
     },
   })
 );
-
-
+  
 // override mothod form protocol
 var methodOverride = require("method-override");
 app.use(methodOverride("_method"));

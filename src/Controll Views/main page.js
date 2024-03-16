@@ -20,8 +20,6 @@ class MainPageController {
         return res.redirect("back");
       }
     } catch (error) {
-      // Handle errors
-      console.error("Error in MainPageController:", error);
       // Pass the error to the next middleware
       next(error);
     }

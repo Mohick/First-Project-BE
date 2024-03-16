@@ -10,8 +10,6 @@ class JsonDiscover {
       // Send JSON response
       res.json(plainData);
     } catch (error) {
-      // Handle errors
-      console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
