@@ -215,7 +215,7 @@
     }
 
     function openSubmit() {
-       
+
         if (!!inputFileImage.files[0] && !!inputFileAudio.files[0]
             && inputFileTitle.value.length > 0 && inputNameSinger.value.length > 0
             && (selectCountry.value.trim().toLowerCase() == "VN".trim().toLowerCase()
@@ -239,5 +239,6 @@
             event.preventDefault()
         }
     }
+    document.querySelector('title').innerHTML = 'Discover'
 
 </script>

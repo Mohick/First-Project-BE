@@ -200,10 +200,10 @@
         e.stopPropagation()
     }
     const tagNameAdmin = document.querySelector('.nameAdmin')
-        if (!!tagNameAdmin) {
-            const usernameAdmin = document.querySelector('#usernameAdmin')
-            if ((tagNameAdmin.innerHTML + '').trim().length > 0) {
-                usernameAdmin.innerHTML = `
+    if (!!tagNameAdmin) {
+        const usernameAdmin = document.querySelector('#usernameAdmin')
+        if ((tagNameAdmin.innerHTML + '').trim().length > 0) {
+            usernameAdmin.innerHTML = `
                  <div id="header__name--user" class="items-end text-end m-1 p-1.5 capitalize
                          text-purple-50 relative  rounded hover:text-neutral-950 hover:bg-zinc-200 inline-block no-underline
                          ">
@@ -223,6 +223,8 @@
                                     </li>
                                 </ul>
                             </div>`
-            }
         }
+    }
+    document.querySelector('title').innerHTML = 'Discover'
+
 </script>

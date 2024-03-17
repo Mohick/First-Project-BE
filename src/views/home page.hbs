@@ -8,7 +8,7 @@
         <div class="border block border-solid capitalize border-black overflow-y-auto  max-h-52 p-2">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 border xl:grid-cols-5 2xl:grid-cols-6">
                 <div class=" text-center border border-solid border-black w-full overflow-hidden ">
-                    <a class="block p-2"  href="account/">Account</a>
+                    <a class="block p-2" href="account/">Account</a>
                 </div>
                 <div class=" text-center border border-solid w-full overflow-hidden border-black ">
                     <a class="block p-2" href="discover/">discover</a>
@@ -19,5 +19,8 @@
     </div>
 </div>
 <div class="nameAdmin hidden">
-{{nameAdmin}}
+    {{nameAdmin}}
 </div>
+<script>
+    document.querySelector('title').innerHTML = 'Home'
+</script>

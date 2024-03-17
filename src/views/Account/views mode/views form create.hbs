@@ -187,7 +187,7 @@
     }
     function checkReEnterPassword() {
         const alertTag = document.querySelector('.alert-reEnterPassword')
-        if (reEnterPassword.value.trim().length > 8 && password.value.trim() == reEnterPassword.value) {
+        if (reEnterPassword.value.trim().length >= 8 && password.value.trim() == reEnterPassword.value) {
 
             alertTag.classList.remove("text-red-600")
             alertTag.classList.add("text-green-600")
@@ -256,5 +256,6 @@
             e.preventDefault()
         }
     }
+    document.querySelector('title').innerHTML = 'Account Users'
 
 </script>

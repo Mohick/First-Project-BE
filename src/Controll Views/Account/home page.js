@@ -5,21 +5,16 @@ class HomePageAccount {
   async chooseMode(req, res, next) {
     try {
       // Check if an admin session exists
-      if (!!req.session.admin) {
-        // Fetch admin data
-        await Admin.findOne({ _id: req.session.admin._id }).then((result) => {
-          if (!!result) {
-            // Extract admin username
-            const nameAdmin = result.toObject().username;
-            // Render the choose mode view with admin name
-            res.render("./Account/choose mode", { nameAdmin });
-          } else {
-            // Redirect back if admin not found
-            return res.redirect("back");
-          }
-        });
+      const { email, password } = req.session.admin;
+
+      if (
+        process.env.emailAdmin === email &&
+        process.env.passwordAdmin === password
+      ) {
+        // Render the homepage with mode selection
+        res.render("./Account/choose mode", { nameAdmin: email });
       } else {
-        // Redirect back if admin session does not exist
+        // Redirect back if admin session doesn't exist
         return res.redirect("back");
       }
     } catch (error) {

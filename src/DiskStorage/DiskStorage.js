@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     // Define destination based on file fieldname
     switch (file.fieldname.toLowerCase()) {
       case "imagemusical":
-        cb(null, "./public/img/");
+        cb(null, "./public/image/");
         break;
       case "audiomusical":
         cb(null, "./public/audio/");

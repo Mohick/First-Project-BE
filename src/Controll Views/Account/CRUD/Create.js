@@ -2,44 +2,52 @@ const SchemaAccount = require("../../../Schema/SchemaAccount/Schema");
 
 class CreateAccount {
   async create(req, res, next) {
-    // Regular expression to validate email format
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
-      const { username, email, password } = req.body;
+      // Regular expression to validate email format
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      // Checking if username, email, and password meet the required criteria
+      const { email: adminEmail, password: adminPassword } = req.session.admin;
+
+      // Check if the user is logged in as admin
       if (
-        username.trim().length > 6 &&
-        regex.test(email) &&
-        password.trim().length > 6 &&
-        password.trim() !== email
+        process.env.emailAdmin === adminEmail &&
+        process.env.passwordAdmin === adminPassword
       ) {
-        // Checking if the email is already associated with an existing account
-        const existingAccount = await SchemaAccount.findOne({ email: email });
+        const { username, email, password } = req.body;
 
-        if (!existingAccount) {
-          // Saving the account information to the database if it's a new account
-          const formatData = new SchemaAccount(req.body);
-          await formatData.save();
+        // Checking if username, email, and password meet the required criteria
+        if (
+          username.trim().length > 6 &&
+          regex.test(email) &&
+          password.trim().length >= 8 &&
+          password.trim() !== email
+        ) {
+          // Checking if the email is already associated with an existing account
+          const existingAccount = await SchemaAccount.findOne({ email: email });
 
-          // Setting session data for the new account
-          req.session.account = {
-            email: email,
-            password: password,
-          };
-          // Returning success message if the account is created successfully
-          return res.json({ message: "success" });
+          if (!existingAccount) {
+            // Saving the account information to the database if it's a new account
+            const newAccount = new SchemaAccount(req.body);
+            await newAccount.save();
+
+            // Returning success message if the account is created successfully
+            return res.redirect("back");
+
+          } else {
+            // Redirecting back if the email is already in use
+            return res.redirect("back");
+          }
         } else {
-          // Redirecting back if the email is already in use
+          // Redirecting back if the input data doesn't meet the required criteria
           return res.redirect("back");
         }
       } else {
-        // Redirecting back if the input data doesn't meet the required criteria
+        // Redirecting back if the credentials don't match
         return res.redirect("back");
       }
     } catch (error) {
-      // Handling errors
-      return next;
+      // Handling errors by passing them to the next middleware
+      return next(error);
     }
   }
 }
