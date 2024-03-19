@@ -6,27 +6,22 @@ class ViewsTrash {
   async views(req, res, next) {
     try {
       // Check if an admin session exists
-      if (!!req.session.admin) {
-        // Fetch admin and all deleted account data
-        Promise.all([
-          Admin.findOne({ _id: req.session.admin._id }),
-          SchemaAccount.findDeleted({}),
-        ]).then(([admin, account]) => {
-          if (!!admin) {
-            // Extract admin username and convert deleted account data to JSON
-            const nameAdmin = admin.toObject().username;
-            const resultData = account.map((data) => {
-              return data.toObject();
-            });
-            // Render the trash view with admin name and deleted account data
-            return res.render("./Account/views mode/views trash", {
-              nameAdmin,
-              resultData: JSON.stringify(resultData),
-            });
-          } else {
-            // Redirect back if admin not found
-            return res.redirect("back");
-          }
+      const { email, password } = req.session.admin;
+
+      if (
+        process.env.emailAdmin === email &&
+        process.env.passwordAdmin === password
+      ) {
+        // Find deleted account data
+        const accounts = await SchemaAccount.findDeleted({});
+
+        // Convert deleted account data to plain objects
+        const accountData = accounts.map((data) => data.toObject());
+
+        // Render the trash view with admin name and deleted account data
+        return res.render("./Account/views mode/views trash", {
+          nameAdmin: email,
+          resultData: JSON.stringify(accountData),
         });
       } else {
         // Redirect back if admin session does not exist

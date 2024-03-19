@@ -5,33 +5,31 @@ class ViewsFormCreated {
   async views(req, res, next) {
     try {
       // Check if an admin session exists
-      if (!!req.session.admin) {
-        // Fetch admin and all user data
-        Promise.all([
-          Admin.findOne({ _id: req.session.admin._id }),
-          SchemaAccount.find({}),
-        ]).then(([admin, account]) => {
-          if (!!admin) {
-            // Extract admin username and convert user data to JSON
-            const nameAdmin = admin.toObject().username;
-            const resultData = account.map((data) => data.toObject());
-            // Render the view for creating a new form
-            res.render("./Account/views mode/views form create", {
-              resultData: JSON.stringify(resultData),
-              nameAdmin: nameAdmin,
-            });
-          } else {
-            // Redirect to login if admin not found
-            res.redirect("/login/");
-          }
+      const { email, password } = req.session.admin;
+
+      if (
+        process.env.emailAdmin === email &&
+        process.env.passwordAdmin === password
+      ) {
+        // Find all accounts
+        const accounts = await SchemaAccount.find({});
+
+        // Convert account data to plain objects
+        const accountData = accounts.map((data) => data.toObject());
+
+        // Render the view for creating a new form
+        res.render("./Account/views mode/views form create", {
+          resultData: JSON.stringify(accountData),
+          nameAdmin: email,
         });
       } else {
         // Redirect to login if admin session does not exist
-        res.redirect("/login/");
+        res.redirect("back");
       }
     } catch (error) {
       // Handle errors by passing them to the next middleware
-      return next(error);
+      // return next(error); //only use when development 
+      return res.redirect("back");
     }
   }
 }

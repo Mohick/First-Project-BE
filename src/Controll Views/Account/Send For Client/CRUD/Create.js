@@ -40,7 +40,8 @@ class CreateAccountClient {
       }
     } catch (error) {
       // Handle errors by passing them to the next middleware
-      return next(error);
+       // return next(error); //only use when development 
+       return res.redirect("back");
     }
   }
 }

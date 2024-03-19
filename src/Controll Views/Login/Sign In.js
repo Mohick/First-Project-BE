@@ -8,7 +8,8 @@ class AdminAccountController {
       // Handle any errors that occur during rendering
       console.error("Error rendering admin login view:", error);
       // Pass the error to the next middleware
-      next(error);
+      // return next(error); //only use when development 
+      return res.redirect("back");
     }
   }
 }

@@ -4,20 +4,17 @@ class ViewsFormCreated {
   // Render view for form creation
   async views(req, res, next) {
     try {
+      // Extract email and password from admin session
+      const { email, password } = req.session.admin;
+
       // Check if an admin session exists
-      if (!!req.session.admin) {
-        // Find admin data by ID
-        await Admin.findOne({ _id: req.session.admin._id }).then((result) => {
-          // Check if admin exists
-          if (!!result) {
-            // Extract admin username
-            const nameAdmin = result.toObject().username;
-            // Render form creation view with admin username
-            return res.render("./Discover/views mode/views form create", { nameAdmin });
-          } else {
-            // Redirect to the previous page if admin doesn't exist
-            return res.redirect("back");
-          }
+      if (
+        process.env.emailAdmin === email &&
+        process.env.passwordAdmin === password
+      ) {
+        // If admin session exists, render the form creation view
+        return res.render("./Discover/views mode/views form create", {
+          nameAdmin: email,
         });
       } else {
         // Redirect to the previous page if admin session doesn't exist
@@ -25,7 +22,8 @@ class ViewsFormCreated {
       }
     } catch (error) {
       // Handle errors by passing them to the next middleware
-      return next(error);
+      // return next(error); //only use when development 
+      return res.redirect("back");
     }
   }
 }

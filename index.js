@@ -37,8 +37,8 @@ app.use(
     saveUninitialized: JSON.parse(process.env.httpOnly),
     store: MongoStore.create(options),
     cookie: {
-      secure: false, // Thay đổi nếu sử dụng HTTPS
-      httpOnly: true,
+      secure: JSON.parse(process.env.security), // Thay đổi nếu sử dụng HTTPS
+      httpOnly: JSON.parse(process.env.httpOnly),
       sameSite: 'Lax',
       maxAge: 1000 * 60 * 60 * 24 * Number( process.env.ageCookiesSession),
     },
@@ -62,6 +62,7 @@ app.use(express.static('.'))
 const routes = require("./src/Router/Router Page");
 routes(app);
 // listen on port at http://localhost:3000
+// if can not accses port 3000 you could use http://localhost:3000/login because you no yet login
 app.listen(port, () => {
-  console.log(`port server http://localhost:${port}`);
+  console.log(`port server http://localhost:${port}/`);
 });
